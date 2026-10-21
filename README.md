@@ -8,12 +8,58 @@ Nic se neinstaluje. Potřebuješ jen webový prohlížeč (Chrome, Firefox, Edge
 
 ### Možnost A: přes git
 
+#### 1. Nainstaluj git (jen poprvé)
+
+Nejdřív zjisti, jestli git už nemáš. Otevři terminál:
+
+- **Windows:** stiskni klávesu **Windows**, napiš `PowerShell` a zmáčkni **Enter**.
+- **Linux:** stiskni **Ctrl + Alt + T** (nebo v aplikacích najdi „Terminál“).
+
+Do terminálu napiš `git --version` a zmáčkni **Enter**. Když se vypíše něco jako `git version 2.45.0`, git máš a můžeš přeskočit na krok 2.
+
+**Windows**
+
+Varianta 1, příkazem (Windows 10/11): v PowerShellu spusť
+
+```
+winget install --id Git.Git -e --source winget
+```
+
+Potvrď případné dotazy (napiš `Y` a **Enter**).
+
+Varianta 2, klikáním:
+
+1. Otevři https://git-scm.com/downloads/win a stáhni instalátor (**64-bit Git for Windows Setup**).
+2. Spusť stažený soubor `Git-…-64-bit.exe`.
+3. Na všech obrazovkách jen klikej **Next** (výchozí volby jsou v pořádku), nakonec **Install** a **Finish**.
+
+Po instalaci **zavři PowerShell a otevři ho znovu** (jinak git nenajde). Ověř příkazem `git --version`.
+
+**Linux**
+
+Podle distribuce spusť v terminálu jeden z příkazů (zeptá se na tvoje heslo, při psaní hesla se nic nezobrazuje, to je v pořádku):
+
+| Distribuce | Příkaz |
+| --- | --- |
+| Ubuntu, Debian, Linux Mint, Pop!_OS | `sudo apt update && sudo apt install git` |
+| Fedora | `sudo dnf install git` |
+| Arch, Manjaro, Omarchy | `sudo pacman -S git` |
+| openSUSE | `sudo zypper install git` |
+
+Ověř příkazem `git --version`.
+
+#### 2. Stáhni projekt a spusť ho
+
+V terminálu spusť:
+
 ```
 git clone https://github.com/MatejSulic/prop_firm_calculator.git
 cd prop_firm_calculator
 ```
 
-Pak otevři `index.html` v prohlížeči:
+Projekt se stáhne do složky `prop_firm_calculator` ve složce, kde zrovna jsi (po otevření terminálu je to tvoje domovská složka, na Windows `C:\Users\<tvoje jméno>`).
+
+Pak otevři `index.html` v prohlížeči (pořád ve stejném terminálu):
 
 - **Windows:** `start index.html`
 - **macOS:** `open index.html`
