@@ -139,6 +139,7 @@ Výpočet běží ve Web Workeru. Při otevření přes `file://` se automaticky
 - Čas: medián a 80. percentil dní, histogram, ukázkové trajektorie
 - Citlivost na úspěšnost a hranice úspěšnosti (od kdy se to vyplatí)
 - Optimalizátor rizika: heatmapa riziko evaluace × funded, slider cílového času
+- Presety účtů: Lucid Trading Flex 25K / 50K / 100K (pravidla se vyplní samy)
 - Čeština i angličtina (přepínač CZ / EN v hlavičce)
 - Vstupy se ukládají do localStorage, světlý i tmavý režim, funguje na mobilu (přepínač Auto / Světlý / Tmavý)
 

@@ -97,6 +97,8 @@
   aside { align-self: start; }
   .group { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 12px; }
   .group h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 8px; }
+  .group .preset { padding-bottom: 8px; margin-bottom: 4px; border-bottom: 1px solid var(--grid); }
+  .group .preset + .sub { border-top: 0; padding-top: 2px; }
   .group .sub { font-size: 12.5px; font-weight: 650; margin: 10px 0 2px; padding-top: 9px; border-top: 1px solid var(--grid); }
   .group h2 + .sub { border-top: 0; padding-top: 0; margin-top: 4px; }
   .matrix { display: grid; grid-template-columns: minmax(0, 1fr) repeat(3, 68px); gap: 6px; align-items: center; padding-bottom: 8px; margin-bottom: 4px; border-bottom: 1px solid var(--grid); }
@@ -380,12 +382,12 @@
   const tx = (cs, en) => (lang === 'en' ? en : cs);
   const LOC = () => tx('cs-CZ', 'en-US');
   const PCT = () => tx(' %', '%');
-  const D = { ...Sim.DEFAULTS, targetDays: 25, currency: 'CZK', currencySym: '' };
+  const D = { ...Sim.DEFAULTS, targetDays: 25, currency: 'CZK', currencySym: '', preset: '', presetScale: 1 };
 
   // Vstupy: Účet a pravidla (evaluace, drawdown, funded) · Obchodování (tabulka eval vs. funded) · Rozpočet
   const F = (k, label, unit, step, min, max, extra) => ({ k, label, unit, step, min, max, ...extra });
   const groups = () => [
-    { title: tx('Účet a pravidla', 'Account & rules'), sections: [
+    { title: tx('Účet a pravidla', 'Account & rules'), presets: true, sections: [
       { sub: tx('Evaluace', 'Evaluation'), fields: [
         F('accountPrice', tx('Cena účtu', 'Account price'), '$', 1, 0),
         F('resetPrice', tx('Cena resetu', 'Reset price'), '$', 1, 0, null, { hint: tx('Bere se levnější z obou.', 'The cheaper of the two is used.') }),
@@ -445,6 +447,29 @@
     HUF: { sym: 'Ft', rate: 340, name: ['Maďarský forint', 'Hungarian forint'] },
     OTHER: { sym: '', rate: null, name: ['Jiná…', 'Other…'] },
   };
+  // Presety podle pravidel z webu firmy (eval karty). Riziko a výplaty se přepočítají ve stejném poměru k max lossu.
+  const PRESETS = {
+    'lucid-flex-25k': { name: 'Lucid Flex 25K', v: { accountPrice: 39, resetPrice: 45, profitTarget: 1250, maxLoss: 1000, dailyLoss: 600, consistency: 40, lockOffset: 100, minDaysBetween: 5 } },
+    'lucid-flex-50k': { name: 'Lucid Flex 50K', v: { accountPrice: 69, resetPrice: 80, profitTarget: 3000, maxLoss: 2000, dailyLoss: 1200, consistency: 40, lockOffset: 100, minDaysBetween: 5 } },
+    'lucid-flex-100k': { name: 'Lucid Flex 100K', v: { accountPrice: 129, resetPrice: 150, profitTarget: 6000, maxLoss: 3000, dailyLoss: 1800, consistency: 40, lockOffset: 100, minDaysBetween: 5 } },
+  };
+  function applyPreset(id) {
+    const P = PRESETS[id];
+    if (!P) return;
+    const k = state.maxLoss > 0 ? P.v.maxLoss / state.maxLoss : 1;
+    const r5 = (x) => Math.max(5, Math.round(x * k / 5) * 5), r50 = (x) => Math.max(50, Math.round(x * k / 50) * 50);
+    state.riskEval = r5(state.riskEval);
+    state.riskFundedBefore = r5(state.riskFundedBefore);
+    state.riskFundedAfter = r5(state.riskFundedAfter);
+    state.payoutTarget = r50(state.payoutTarget);
+    state.payoutSize = r50(state.payoutSize);
+    Object.assign(state, P.v);
+    state.preset = id;
+    state.presetScale = k;
+    fillForm();
+    changed();
+  }
+
   const curSym = () => (state.currency === 'OTHER' ? (state.currencySym || '¤') : (CURRENCIES[state.currency] || CURRENCIES.CZK).sym);
   const allFields = () => groups().flatMap((g) => [
     ...(g.matrix ? g.matrix.rows.flatMap((r) => r.cells) : []),
@@ -491,6 +516,16 @@
             r.cells.map((f) => `<input type="number" id="in_${f.k}" aria-label="${f.label}" title="${f.label}"${attrs(f)}${f.span ? ` class="span${f.span}"` : ''}>`).join('')).join('');
         box.appendChild(m);
         for (const r of g.matrix.rows) for (const f of r.cells) bind(f, m.querySelector('#in_' + f.k));
+      }
+      if (g.presets) {
+        const pr = document.createElement('div');
+        pr.className = 'fields preset';
+        pr.innerHTML = `<div class="field full"><label for="preset">${tx('Preset účtu', 'Account preset')}</label><select id="preset">` +
+          `<option value="">${tx('— vlastní nastavení —', '— custom settings —')}</option>` +
+          Object.entries(PRESETS).map(([id, x]) => `<option value="${id}">${x.name}</option>`).join('') +
+          `</select><div class="hint" id="presetHint"></div></div>`;
+        box.insertBefore(pr, box.firstChild.nextSibling);
+        pr.querySelector('#preset').addEventListener('change', (e) => { if (e.target.value) applyPreset(e.target.value); });
       }
       if (g.currency) {
         const c = document.createElement('div');
@@ -594,6 +629,16 @@
     $('fixedSeed').checked = !!state.fixedSeed;
     updateCurrencyUi(false);
     updateAttemptsHint();
+    updatePresetUi();
+  }
+
+  function updatePresetUi() {
+    const P = PRESETS[state.preset];
+    $('preset').value = P ? state.preset : '';
+    const k = state.presetScale || 1;
+    $('presetHint').textContent = !P ? tx('Vyber firmu a velikost účtu, pravidla se vyplní samy.', 'Pick a firm and account size, the rules fill in automatically.')
+      : tx(`Pravidla podle webu firmy. Riziko a výplaty${Math.abs(k - 1) > 0.001 ? ` přepočítány ×${fmtNum(k, 2)} podle max lossu` : ' ponechány'} – zkontroluj je.`,
+        `Rules from the firm's website. Risk and payouts${Math.abs(k - 1) > 0.001 ? ` scaled ×${fmtNum(k, 2)} by max loss` : ' kept'} – check them.`);
   }
 
   function updateCurrencyUi(switched) {
@@ -621,6 +666,10 @@
     el.classList.toggle('invalid', !ok);
     if (!ok) return;
     state[f.k] = v;
+    if (state.preset && PRESETS[state.preset] && f.k in PRESETS[state.preset].v && PRESETS[state.preset].v[f.k] !== v) {
+      state.preset = ''; // ruční změna pravidla = už to není preset
+      updatePresetUi();
+    }
     changed();
   }
 
