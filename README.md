@@ -4,9 +4,24 @@ Lokální webová kalkulačka pro plánování prop trading účtů: Monte Carlo
 
 ## Jak to stáhnout a spustit (krok za krokem)
 
-Nic se neinstaluje. Potřebuješ jen webový prohlížeč (Chrome, Firefox, Edge, Safari…).
+Nic se neinstaluje. Potřebuješ jen webový prohlížeč (Chrome, Firefox, Edge, Safari…). Pro možnost A ještě [git](https://git-scm.com/downloads); když ho nemáš, použij možnost B.
 
-### Možnost A: stažení jako ZIP (nejjednodušší)
+### Možnost A: přes git
+
+```
+git clone https://github.com/MatejSulic/prop_firm_calculator.git
+cd prop_firm_calculator
+```
+
+Pak otevři `index.html` v prohlížeči:
+
+- **Windows:** `start index.html`
+- **macOS:** `open index.html`
+- **Linux:** `xdg-open index.html`
+
+Aktualizace na novou verzi: ve složce spusť `git pull` a obnov stránku v prohlížeči (F5).
+
+### Možnost B: stažení jako ZIP (bez gitu)
 
 1. Otevři stránku projektu: https://github.com/MatejSulic/prop_firm_calculator
 2. Klikni na zelené tlačítko **`<> Code`** (vpravo nahoře nad seznamem souborů).
@@ -24,21 +39,6 @@ Hotovo. Příště stačí znovu dvakrát kliknout na `index.html`.
 > Pozor: soubory `index.html` a `sim.js` musí zůstat **ve stejné složce**. Nepřesouvej jen `index.html` jinam, jinak se nic nespočítá.
 >
 > Když se `index.html` otevře v jiném programu než v prohlížeči (třeba v textovém editoru), klikni na něj pravým tlačítkem → **Otevřít v aplikaci / Otevřít pomocí** → vyber prohlížeč.
-
-### Možnost B: přes git (pokud git znáš)
-
-```
-git clone https://github.com/MatejSulic/prop_firm_calculator.git
-cd prop_firm_calculator
-```
-
-Pak otevři `index.html` v prohlížeči:
-
-- **Windows:** `start index.html`
-- **macOS:** `open index.html`
-- **Linux:** `xdg-open index.html`
-
-Aktualizace na novou verzi: ve složce spusť `git pull` a obnov stránku v prohlížeči (F5).
 
 ### Jak to používat
 
