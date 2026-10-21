@@ -139,6 +139,7 @@ Výpočet běží ve Web Workeru. Při otevření přes `file://` se automaticky
 - Čas: medián a 80. percentil dní, histogram, ukázkové trajektorie
 - Citlivost na úspěšnost a hranice úspěšnosti (od kdy se to vyplatí)
 - Optimalizátor rizika: heatmapa riziko evaluace × funded, slider cílového času
-- Vstupy se ukládají do localStorage, světlý i tmavý režim, funguje na mobilu
+- Čeština i angličtina (přepínač CZ / EN v hlavičce)
+- Vstupy se ukládají do localStorage, světlý i tmavý režim, funguje na mobilu (přepínač Auto / Světlý / Tmavý)
 
 Model předpokládá nezávislé obchody a konstantní úspěšnost, nezahrnuje skluz, poplatky ani psychologii. Není to finanční poradenství.

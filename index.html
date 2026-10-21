@@ -265,13 +265,14 @@
 </head>
 <body>
 <header>
-  <h1>Prop kalkulačka</h1>
+  <h1 data-en="Prop firm calculator">Prop kalkulačka</h1>
   <div class="status" id="status">Připravuji…</div>
   <div class="controls">
-    <label>Běhů <input type="number" id="runs" min="1000" max="1000000" step="1000"></label>
-    <label><input type="checkbox" id="fixedSeed"> Stejná náhoda</label>
-    <button id="theme" type="button" title="Přepnout barevný režim"></button>
-    <button id="reset" type="button">Obnovit výchozí hodnoty</button>
+    <label><span data-en="Runs">Běhů</span> <input type="number" id="runs" min="1000" max="1000000" step="1000"></label>
+    <label><input type="checkbox" id="fixedSeed"> <span data-en="Same randomness">Stejná náhoda</span></label>
+    <button id="lang" type="button" title="Jazyk / Language"></button>
+    <button id="theme" type="button"></button>
+    <button id="reset" type="button" data-en="Reset to defaults">Obnovit výchozí hodnoty</button>
   </div>
 </header>
 
@@ -280,87 +281,87 @@
 
   <main>
     <section class="kpis">
-      <div class="kpi"><div class="lbl">Projití evaluace</div><div class="val" id="kEval">–</div><div class="sub" id="kEvalSub"></div></div>
-      <div class="kpi"><div class="lbl">1. výplata z funded účtu<br><small>(po projití evaluace)</small></div><div class="val" id="kFunded">–</div><div class="sub" id="kFundedSub"></div></div>
-      <div class="kpi"><div class="lbl">Celkem na jeden účet<br><small>(evaluace × funded)</small></div><div class="val" id="kTotal">–</div><div class="sub" id="kTotalSub"></div></div>
-      <div class="kpi main"><div class="lbl">Aspoň 1 výplata v rámci rozpočtu</div><div class="val" id="kAny">–</div><div class="sub" id="kAnySub"></div></div>
+      <div class="kpi"><div class="lbl" data-en="Passing the evaluation">Projití evaluace</div><div class="val" id="kEval">–</div><div class="sub" id="kEvalSub"></div></div>
+      <div class="kpi"><div class="lbl" data-en="1st payout from funded<br><small>(after passing the evaluation)</small>">1. výplata z funded účtu<br><small>(po projití evaluace)</small></div><div class="val" id="kFunded">–</div><div class="sub" id="kFundedSub"></div></div>
+      <div class="kpi"><div class="lbl" data-en="Overall per account<br><small>(evaluation × funded)</small>">Celkem na jeden účet<br><small>(evaluace × funded)</small></div><div class="val" id="kTotal">–</div><div class="sub" id="kTotalSub"></div></div>
+      <div class="kpi main"><div class="lbl" data-en="At least 1 payout within budget">Aspoň 1 výplata v rámci rozpočtu</div><div class="val" id="kAny">–</div><div class="sub" id="kAnySub"></div></div>
     </section>
 
     <section class="warnings" id="warnings"></section>
 
     <section class="cards">
       <div class="card">
-        <h3>Peníze</h3>
+        <h3 data-en="Money">Peníze</h3>
         <table class="kv"><tbody id="money"></tbody></table>
       </div>
       <div class="card">
-        <h3>Čas <small>obchodní dny, jen úspěšné běhy</small></h3>
+        <h3 data-en="Time <small>trading days, successful runs only</small>">Čas <small>obchodní dny, jen úspěšné běhy</small></h3>
         <table>
-          <thead><tr><th>Fáze</th><th>Medián</th><th>80. percentil</th><th>Vzorků</th></tr></thead>
+          <thead><tr><th data-en="Phase">Fáze</th><th data-en="Median">Medián</th><th data-en="80th percentile">80. percentil</th><th data-en="Samples">Vzorků</th></tr></thead>
           <tbody id="time"></tbody>
         </table>
       </div>
 
       <div class="card wide">
-        <h3>Funded účet – všechny výplaty <small>od projití evaluace do pádu, limitu výplat nebo horizontu</small></h3>
+        <h3 data-en="Funded account – all payouts <small>from passing the evaluation until failure, payout limit or horizon</small>">Funded účet – všechny výplaty <small>od projití evaluace do pádu, limitu výplat nebo horizontu</small></h3>
         <div class="life">
           <table class="kv"><tbody id="life"></tbody></table>
           <div>
-            <div class="sublbl">Kolik výplat funded účet dá</div>
+            <div class="sublbl" data-en="How many payouts a funded account gives">Kolik výplat funded účet dá</div>
             <div id="lifeDist" class="dist"></div>
           </div>
         </div>
       </div>
 
       <div class="card wide">
-        <h3>Citlivost na úspěšnost</h3>
+        <h3 data-en="Sensitivity to win rate">Citlivost na úspěšnost</h3>
         <div class="scroll"><table>
-          <thead><tr><th id="sensHead">Úspěšnost</th><th>Evaluace</th><th>Funded</th><th>Celkem</th><th>Aspoň 1 výplata<br>v rozpočtu</th></tr></thead>
+          <thead><tr><th id="sensHead">Úspěšnost</th><th data-en="Evaluation">Evaluace</th><th>Funded</th><th data-en="Overall">Celkem</th><th data-en="At least 1 payout<br>within budget">Aspoň 1 výplata<br>v rozpočtu</th></tr></thead>
           <tbody id="sens"></tbody>
         </table></div>
       </div>
 
       <div class="card wide">
-        <h3>Dny do první výplaty <small>evaluace + funded, jen úspěšné běhy</small></h3>
+        <h3 data-en="Days to first payout <small>evaluation + funded, successful runs only</small>">Dny do první výplaty <small>evaluace + funded, jen úspěšné běhy</small></h3>
         <div id="hist"></div>
       </div>
 
       <div class="card wide">
-        <h3>Ukázkové trajektorie evaluace <small>20 náhodných běhů</small></h3>
+        <h3 data-en="Sample evaluation trajectories <small>20 random runs</small>">Ukázkové trajektorie evaluace <small>20 náhodných běhů</small></h3>
         <div id="traj"></div>
         <div class="legend">
-          <span><i style="border-color:var(--good)"></i>zůstatek (prošel)</span>
-          <span><i style="border-color:var(--bad)"></i>zůstatek (spadl)</span>
-          <span><i style="border-color:var(--bad);border-top-width:8px;opacity:.25"></i>pod hranicí drawdownu = pád</span>
+          <span><i style="border-color:var(--good)"></i><span data-en="balance (passed)">zůstatek (prošel)</span></span>
+          <span><i style="border-color:var(--bad)"></i><span data-en="balance (failed)">zůstatek (spadl)</span></span>
+          <span><i style="border-color:var(--bad);border-top-width:8px;opacity:.25"></i><span data-en="below drawdown limit = failure">pod hranicí drawdownu = pád</span></span>
           <span><i style="border-color:var(--muted);border-top-style:dashed"></i>profit target</span>
         </div>
       </div>
       <div class="card wide">
-        <h3>Hranice úspěšnosti <small>od jaké úspěšnosti obchodů se to vyplatí</small></h3>
+        <h3 data-en="Win-rate threshold <small>from which trade win rate it pays off</small>">Hranice úspěšnosti <small>od jaké úspěšnosti obchodů se to vyplatí</small></h3>
         <div class="be-tiles" id="beTiles"></div>
         <div id="beChart"></div>
         <p class="opt-sum" id="beNote"></p>
       </div>
 
       <div class="card wide">
-        <h3>Optimální riziko a čas <small>klikni na buňku nebo na doporučení a riziko se nastaví</small></h3>
+        <h3 data-en="Optimal risk and time <small>click a cell or a recommendation to apply that risk</small>">Optimální riziko a čas <small>klikni na buňku nebo na doporučení a riziko se nastaví</small></h3>
         <div class="slider">
-          <label for="targetDays">Chci první výplatu do <b id="targetDaysVal"></b> obchodních dní <span>(medián, u účtu, který uspěje)</span></label>
+          <label for="targetDays" data-en="I want the first payout within <b id='targetDaysVal'></b> trading days <span>(median, for an account that succeeds)</span>">Chci první výplatu do <b id="targetDaysVal"></b> obchodních dní <span>(medián, u účtu, který uspěje)</span></label>
           <input type="range" id="targetDays" min="6" max="80" step="1">
         </div>
         <div class="recs" id="recs"></div>
         <div class="seg" id="optMetric" role="radiogroup">
-          <button type="button" data-m="pTotal">Šance na 1. výplatu</button>
-          <button type="button" data-m="rate">Zisk za obchodní den</button>
-          <button type="button" data-m="ev">Očekávaný zisk na pokus</button>
-          <button type="button" data-m="days">Medián dní do 1. výplaty</button>
+          <button type="button" data-m="pTotal" data-en="Chance of 1st payout">Šance na 1. výplatu</button>
+          <button type="button" data-m="rate" data-en="Profit per trading day">Zisk za obchodní den</button>
+          <button type="button" data-m="ev" data-en="Expected profit per attempt">Očekávaný zisk na pokus</button>
+          <button type="button" data-m="days" data-en="Median days to 1st payout">Medián dní do 1. výplaty</button>
         </div>
         <div class="scroll"><table class="heat" id="heat"></table></div>
         <p class="opt-sum" id="optSum"></p>
       </div>
     </section>
 
-    <p class="note">
+    <p class="note" data-en="The model assumes independent trades and a constant win rate; it does not include slippage, trading fees or psychology. The funded account takes payouts according to the rules set until failure, payout limit or horizon. Results are a Monte Carlo estimate, not a guarantee. This is not financial advice.">
       Model předpokládá nezávislé obchody a konstantní úspěšnost, nezahrnuje skluz, poplatky za obchody ani psychologii.
       Funded účet vybírá výplaty podle nastavených pravidel až do pádu, limitu výplat nebo horizontu. Výsledky jsou odhad Monte Carlo simulace, ne záruka.
       Není to finanční poradenství.
@@ -373,85 +374,91 @@
 (function () {
   'use strict';
   const STORAGE_KEY = 'prop-kalkulacka-v1';
+  const LANG_KEY = 'prop-kalkulacka-lang';
+  // jazyk: uložená volba, jinak podle prohlížeče (čeština / slovenština → cs, jinak en)
+  let lang = 'cs';
+  try { lang = localStorage.getItem(LANG_KEY) || (/^(cs|sk)/i.test(navigator.language || '') ? 'cs' : 'en'); } catch (e) {}
+  const tx = (cs, en) => (lang === 'en' ? en : cs);
+  const LOC = () => tx('cs-CZ', 'en-US');
+  const PCT = () => tx(' %', '%');
   const D = { ...Sim.DEFAULTS, targetDays: 25, currency: 'CZK', currencySym: '' };
 
   // Vstupy: Účet a pravidla (evaluace, drawdown, funded) · Obchodování (tabulka eval vs. funded) · Rozpočet
   const F = (k, label, unit, step, min, max, extra) => ({ k, label, unit, step, min, max, ...extra });
-  const GROUPS = [
-    { title: 'Účet a pravidla', sections: [
-      { sub: 'Evaluace', fields: [
-        F('accountPrice', 'Cena účtu', '$', 1, 0),
-        F('resetPrice', 'Cena resetu', '$', 1, 0, null, { hint: 'Bere se levnější z obou.' }),
+  const groups = () => [
+    { title: tx('Účet a pravidla', 'Account & rules'), sections: [
+      { sub: tx('Evaluace', 'Evaluation'), fields: [
+        F('accountPrice', tx('Cena účtu', 'Account price'), '$', 1, 0),
+        F('resetPrice', tx('Cena resetu', 'Reset price'), '$', 1, 0, null, { hint: tx('Bere se levnější z obou.', 'The cheaper of the two is used.') }),
         F('profitTarget', 'Profit target', '$', 50, 1),
-        F('consistency', 'Consistency', '%', 5, 1, 100, { hint: 'Max podíl nejlepšího dne. 100 = vyp.' }),
+        F('consistency', 'Consistency', '%', 5, 1, 100, { hint: tx('Max podíl nejlepšího dne. 100 = vyp.', 'Max share of the best day. 100 = off.') }),
       ]},
       { sub: 'Drawdown', fields: [
         F('maxLoss', 'Max loss / trailing DD', '$', 50, 1),
-        F('lockOffset', 'DD se zamyká na start +', '$', 50, 0, null, { hint: 'Při zůstatku max loss + tato částka.' }),
-        F('dailyLoss', 'Daily loss limit', '$', 50, 0, null, { hint: '0 = bez limitu.' }),
+        F('lockOffset', tx('DD se zamyká na start +', 'DD locks at start +'), '$', 50, 0, null, { hint: tx('Při zůstatku max loss + tato částka.', 'Once balance reaches max loss + this amount.') }),
+        F('dailyLoss', 'Daily loss limit', '$', 50, 0, null, { hint: tx('0 = bez limitu.', '0 = no limit.') }),
       ]},
-      { sub: 'Funded a výplaty', fields: [
-        F('payoutTarget', 'Zisk pro výplatu', '$', 50, 1),
-        F('payoutSize', 'Velikost výplaty', '$', 50, 0),
+      { sub: tx('Funded a výplaty', 'Funded & payouts'), fields: [
+        F('payoutTarget', tx('Zisk pro výplatu', 'Profit for payout'), '$', 50, 1),
+        F('payoutSize', tx('Velikost výplaty', 'Payout size'), '$', 50, 0),
         F('split', 'Profit split', '%', 5, 0, 100),
-        F('maxPayouts', 'Max počet výplat', '', 1, 0, null, { hint: '0 = bez limitu.' }),
-        F('minDaysBetween', 'Min. dní mezi výplatami', '', 1, 0),
-        F('horizonDays', 'Horizont simulace', 'dní', 10, 10),
+        F('maxPayouts', tx('Max počet výplat', 'Max payouts'), '', 1, 0, null, { hint: tx('0 = bez limitu.', '0 = no limit.') }),
+        F('minDaysBetween', tx('Min. dní mezi výplatami', 'Min. days between payouts'), '', 1, 0),
+        F('horizonDays', tx('Horizont simulace', 'Simulation horizon'), tx('dní', 'days'), 10, 10),
       ]},
     ]},
-    { title: 'Obchodování',
+    { title: tx('Obchodování', 'Trading'),
       matrix: {
-        cols: ['Evaluace', 'Funded<br>před zam.', 'Funded<br>po zam.'],
+        cols: [tx('Evaluace', 'Evaluation'), tx('Funded<br>před zam.', 'Funded<br>pre-lock'), tx('Funded<br>po zam.', 'Funded<br>post-lock')],
         rows: [
-          { label: 'Úspěšnost', unit: '%', cells: [
-            F('winRate', 'Úspěšnost – evaluace', '%', 1, 0, 100),
-            F('winRateFunded', 'Úspěšnost – funded', '%', 1, 0, 100, { span: 2 }),
+          { label: tx('Úspěšnost', 'Win rate'), unit: '%', cells: [
+            F('winRate', tx('Úspěšnost – evaluace', 'Win rate – evaluation'), '%', 1, 0, 100),
+            F('winRateFunded', tx('Úspěšnost – funded', 'Win rate – funded'), '%', 1, 0, 100, { span: 2 }),
           ]},
-          { label: 'Riziko / obchod', unit: '$', cells: [
-            F('riskEval', 'Riziko – evaluace', '$', 25, 1),
-            F('riskFundedBefore', 'Riziko – funded před zamčením', '$', 25, 1),
-            F('riskFundedAfter', 'Riziko – funded po zamčení', '$', 25, 1),
+          { label: tx('Riziko / obchod', 'Risk / trade'), unit: '$', cells: [
+            F('riskEval', tx('Riziko – evaluace', 'Risk – evaluation'), '$', 25, 1),
+            F('riskFundedBefore', tx('Riziko – funded před zamčením', 'Risk – funded before lock'), '$', 25, 1),
+            F('riskFundedAfter', tx('Riziko – funded po zamčení', 'Risk – funded after lock'), '$', 25, 1),
           ]},
         ],
       },
       sections: [{ fields: [
-        F('rr', 'R:R (výhra / ztráta)', '', 0.1, 0),
-        F('tradesPerDay', 'Obchodů denně', '', 1, 1, 50),
+        F('rr', tx('R:R (výhra / ztráta)', 'R:R (win / loss)'), '', 0.1, 0),
+        F('tradesPerDay', tx('Obchodů denně', 'Trades per day'), '', 1, 1, 50),
       ]}],
     },
-    { title: 'Rozpočet', currency: true, sections: [{ fields: [
-      F('budget', 'Rozpočet', '¤', 500, 0),
-      F('fxRate', 'Kurz za 1 USD', '', 0.01, 0.0001, null, { hint: '' }),
-      F('fxFee', 'Poplatek za cizí měnu', '%', 0.5, 0),
-      F('taxReserve', 'Rezerva na daně', '%', 1, 0, 100),
-      F('maxAttempts', 'Max počet pokusů', '', 1, 1, null, { optional: true, hint: '', full: true }),
+    { title: tx('Rozpočet', 'Budget'), currency: true, sections: [{ fields: [
+      F('budget', tx('Rozpočet', 'Budget'), '¤', 500, 0),
+      F('fxRate', tx('Kurz za 1 USD', 'Rate per 1 USD'), '', 0.01, 0.0001, null, { hint: '' }),
+      F('fxFee', tx('Poplatek za cizí měnu', 'Foreign currency fee'), '%', 0.5, 0),
+      F('taxReserve', tx('Rezerva na daně', 'Tax reserve'), '%', 1, 0, 100),
+      F('maxAttempts', tx('Max počet pokusů', 'Max attempts'), '', 1, 1, null, { optional: true, hint: '', full: true }),
     ]}]},
   ];
   // Měna rozpočtu: symbol + orientační kurz za 1 USD (předvyplní se jen při přepnutí, je potřeba ho zkontrolovat)
   const CURRENCIES = {
-    CZK: { sym: 'Kč', rate: 21, name: 'Česká koruna' },
-    EUR: { sym: '€', rate: 0.86, name: 'Euro' },
-    USD: { sym: '$', rate: 1, name: 'Americký dolar' },
-    GBP: { sym: '£', rate: 0.75, name: 'Britská libra' },
-    PLN: { sym: 'zł', rate: 3.7, name: 'Polský zlotý' },
-    CHF: { sym: 'CHF', rate: 0.8, name: 'Švýcarský frank' },
-    HUF: { sym: 'Ft', rate: 340, name: 'Maďarský forint' },
-    OTHER: { sym: '', rate: null, name: 'Jiná…' },
+    CZK: { sym: 'Kč', rate: 21, name: ['Česká koruna', 'Czech koruna'] },
+    EUR: { sym: '€', rate: 0.86, name: ['Euro', 'Euro'] },
+    USD: { sym: '$', rate: 1, name: ['Americký dolar', 'US dollar'] },
+    GBP: { sym: '£', rate: 0.75, name: ['Britská libra', 'British pound'] },
+    PLN: { sym: 'zł', rate: 3.7, name: ['Polský zlotý', 'Polish złoty'] },
+    CHF: { sym: 'CHF', rate: 0.8, name: ['Švýcarský frank', 'Swiss franc'] },
+    HUF: { sym: 'Ft', rate: 340, name: ['Maďarský forint', 'Hungarian forint'] },
+    OTHER: { sym: '', rate: null, name: ['Jiná…', 'Other…'] },
   };
   const curSym = () => (state.currency === 'OTHER' ? (state.currencySym || '¤') : (CURRENCIES[state.currency] || CURRENCIES.CZK).sym);
-
-  const ALL_FIELDS = GROUPS.flatMap((g) => [
+  const allFields = () => groups().flatMap((g) => [
     ...(g.matrix ? g.matrix.rows.flatMap((r) => r.cells) : []),
     ...g.sections.flatMap((sec) => sec.fields),
   ]);
 
   const $ = (id) => document.getElementById(id);
-  const fmtPct = (x, d = 1) => (x == null || !isFinite(x)) ? '–' : (x * 100).toLocaleString('cs-CZ', { minimumFractionDigits: d, maximumFractionDigits: d }) + ' %';
-  const fmtNum = (x, d = 0) => (x == null || !isFinite(x)) ? '∞' : x.toLocaleString('cs-CZ', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const fmtPct = (x, d = 1) => (x == null || !isFinite(x)) ? '–' : (x * 100).toLocaleString(LOC(), { minimumFractionDigits: d, maximumFractionDigits: d }) + PCT();
+  const fmtNum = (x, d = 0) => (x == null || !isFinite(x)) ? '∞' : x.toLocaleString(LOC(), { minimumFractionDigits: d, maximumFractionDigits: d });
   // částka v měně rozpočtu (název fmtCzk zůstal z doby, kdy byla jen Kč)
   const fmtCzk = (x) => (x == null || !isFinite(x)) ? '∞'
-    : x.toLocaleString('cs-CZ', { maximumFractionDigits: Math.abs(x) < 100 ? 2 : 0 }) + ' ' + curSym();
-  const fmtUsd = (x) => x.toLocaleString('cs-CZ', { maximumFractionDigits: 2 }) + ' $';
+    : x.toLocaleString(LOC(), { maximumFractionDigits: Math.abs(x) < 100 ? 2 : 0 }) + ' ' + curSym();
+  const fmtUsd = (x) => x.toLocaleString(LOC(), { maximumFractionDigits: 2 }) + ' $';
 
   // ---------- stav + localStorage ----------
   function load() {
@@ -472,7 +479,8 @@
     const root = $('inputs');
     const attrs = (f) => ` step="${f.step}"` + (f.min != null ? ` min="${f.min}"` : '') + (f.max != null ? ` max="${f.max}"` : '') + ' inputmode="decimal"';
     const bind = (f, el) => { el.addEventListener('input', () => onInput(f, el)); inputEls[f.k] = el; };
-    for (const g of GROUPS) {
+    root.innerHTML = '';
+    for (const g of groups()) {
       const box = document.createElement('div');
       box.className = 'group';
       box.innerHTML = `<h2>${g.title}</h2>`;
@@ -488,9 +496,10 @@
       if (g.currency) {
         const c = document.createElement('div');
         c.className = 'fields';
-        c.innerHTML = `<div class="field"><label for="currency">Měna rozpočtu</label><select id="currency">` +
-          Object.entries(CURRENCIES).map(([code, x]) => `<option value="${code}">${code === 'OTHER' ? x.name : `${code} (${x.sym}) – ${x.name}`}</option>`).join('') +
-          `</select></div><div class="field" id="currencySymWrap"><label for="currencySym">Symbol / kód měny</label><input type="text" id="currencySym" maxlength="6" placeholder="např. SEK"></div>`;
+        const nm = (x) => tx(x.name[0], x.name[1]);
+        c.innerHTML = `<div class="field" id="currencyWrap"><label for="currency">${tx('Měna rozpočtu', 'Budget currency')}</label><select id="currency">` +
+          Object.entries(CURRENCIES).map(([code, x]) => `<option value="${code}">${code === 'OTHER' ? nm(x) : `${code} (${x.sym}) – ${nm(x)}`}</option>`).join('') +
+          `</select></div><div class="field" id="currencySymWrap"><label for="currencySym">${tx('Symbol / kód měny', 'Currency symbol / code')}</label><input type="text" id="currencySym" maxlength="6" placeholder="${tx('např. SEK', 'e.g. SEK')}"></div>`;
         box.appendChild(c);
         c.querySelector('#currency').addEventListener('change', (e) => {
           state.currency = e.target.value;
@@ -531,6 +540,10 @@
       }
       root.appendChild(box);
     }
+  }
+
+  // posluchače na statických prvcích (navěšují se jen jednou)
+  function bindStatic() {
     $('runs').addEventListener('input', () => {
       const v = Number($('runs').value);
       const ok = $('runs').value !== '' && v >= 100 && v <= 1000000;
@@ -573,7 +586,7 @@
   }
 
   function fillForm() {
-    for (const f of ALL_FIELDS) {
+    for (const f of allFields()) {
       inputEls[f.k].value = state[f.k];
       inputEls[f.k].classList.remove('invalid');
     }
@@ -589,15 +602,16 @@
     $('currency').value = state.currency;
     $('currencySym').value = state.currencySym || '';
     $('currencySymWrap').style.display = state.currency === 'OTHER' ? '' : 'none';
+    $('currencyWrap').classList.toggle('full', state.currency !== 'OTHER');
     const unit = inputEls.budget.parentElement.querySelector('.unit');
     unit.textContent = sym;
     inputEls.budget.parentElement.classList.toggle('u2', sym.length > 1);
     inputEls.budget.parentElement.classList.toggle('u3', sym.length > 2);
-    document.querySelector('label[for="in_fxRate"]').textContent = `Kurz ${sym}/USD`;
+    document.querySelector('label[for="in_fxRate"]').textContent = tx(`Kurz ${sym}/USD`, `Rate ${sym}/USD`);
     const h = $('hint_fxRate');
-    if (h) h.textContent = state.currency === 'USD' ? 'Rozpočet je v dolarech, kurz je 1.'
-      : switched && CURRENCIES[state.currency] && CURRENCIES[state.currency].rate != null ? 'Orientační kurz – zkontroluj aktuální.'
-      : `Kolik ${sym} stojí 1 USD.`;
+    if (h) h.textContent = state.currency === 'USD' ? tx('Rozpočet je v dolarech, kurz je 1.', 'Budget is in dollars, the rate is 1.')
+      : switched && CURRENCIES[state.currency] && CURRENCIES[state.currency].rate != null ? tx('Orientační kurz – zkontroluj aktuální.', 'Approximate rate – check the current one.')
+      : tx(`Kolik ${sym} stojí 1 USD.`, `How many ${sym} for 1 USD.`);
   }
 
   function onInput(f, el) {
@@ -616,8 +630,8 @@
     const el = inputEls.maxAttempts;
     el.placeholder = 'auto: ' + m.autoAttempts;
     $('hint_maxAttempts').textContent = m.manualAttempts
-      ? `Ručně přepsáno (z rozpočtu by vyšlo ${m.autoAttempts}). Smaž pole pro automatický výpočet.`
-      : `Automaticky z rozpočtu: ${fmtNum(state.budget)} ${curSym()} / ${fmtNum(m.attemptCzk, 2)} ${curSym()} = ${m.autoAttempts}.`;
+      ? tx(`Ručně přepsáno (z rozpočtu by vyšlo ${m.autoAttempts}). Smaž pole pro automatický výpočet.`, `Overridden (the budget would give ${m.autoAttempts}). Clear the field for automatic.`)
+      : tx('Automaticky z rozpočtu', 'Automatically from budget') + `: ${fmtNum(state.budget)} ${curSym()} / ${fmtNum(m.attemptCzk, 2)} ${curSym()} = ${m.autoAttempts}.`;
   }
 
   // ---------- výpočet (Worker → Blob Worker → hlavní vlákno) ----------
@@ -667,9 +681,16 @@
     startedAt = performance.now();
     lastInputs = { ...state };
     lastSeed = state.fixedSeed ? 20240611 : (Math.random() * 2 ** 31) >>> 0;
-    $('status').textContent = `Počítám ${fmtNum(Number(state.runs))} běhů…`;
+    $('status').textContent = tx(`Počítám ${fmtNum(Number(state.runs))} běhů…`, `Running ${fmtNum(Number(state.runs))} simulations…`);
     $('status').classList.add('busy');
     dispatch(lastInputs, lastSeed);
+  }
+
+  let lastSecs = 0;
+  function renderStatus(r) {
+    const where = { file: 'Web Worker', blob: 'Web Worker (Blob)', main: tx('hlavní vlákno', 'main thread') }[workerMode] || '';
+    $('status').textContent = `${fmtNum(r.runs)} ${tx('běhů', 'runs')} · ${fmtNum(lastSecs, 2)} s · ${where}` +
+      (state.fixedSeed ? tx(' · stejná náhoda', ' · same randomness') : '');
   }
 
   function changed() {
@@ -683,37 +704,39 @@
   function onResult(msg) {
     if (msg.id !== jobId) return; // zastaralý výsledek
     $('status').classList.remove('busy');
-    if (msg.error) { $('status').textContent = 'Chyba výpočtu: ' + msg.error; return; }
-    const secs = (performance.now() - startedAt) / 1000;
-    const where = { file: 'Web Worker', blob: 'Web Worker (Blob)', main: 'hlavní vlákno' }[workerMode] || '';
-    $('status').textContent = `${fmtNum(msg.result.runs)} běhů · ${fmtNum(secs, 2)} s · ${where}` +
-      (state.fixedSeed ? ' · stejná náhoda' : '');
+    if (msg.error) { $('status').textContent = tx('Chyba výpočtu: ', 'Calculation error: ') + msg.error; return; }
+    lastSecs = (performance.now() - startedAt) / 1000;
     render(msg.result);
   }
 
   // ---------- varování ----------
   function renderWarnings() {
     const s = state, out = [];
-    const risks = [['evaluace', s.riskEval], ['funded před zamčením', s.riskFundedBefore], ['funded po zamčení', s.riskFundedAfter]];
+    const risks = [[tx('evaluace', 'evaluation'), s.riskEval], [tx('funded před zamčením', 'funded before lock'), s.riskFundedBefore], [tx('funded po zamčení', 'funded after lock'), s.riskFundedAfter]];
     const big = risks.filter(([, r]) => r > 0.3 * s.maxLoss);
     if (big.length) {
       const n = Math.ceil(s.maxLoss / Math.max(...big.map(([, r]) => r)));
-      out.push(`<b>Vysoké riziko</b> (${big.map(([l, r]) => `${l} ${fmtUsd(r)}`).join(', ')} &gt; 30 % max loss): ` +
-        `Při tomhle riziku spadneš po ${n} ztrátách v řadě.`);
+      const list = big.map(([l, r]) => `${l} ${fmtUsd(r)}`).join(', ');
+      out.push(tx(`<b>Vysoké riziko</b> (${list} &gt; 30 % max loss): Při tomhle riziku spadneš po ${n} ztrátách v řadě.`,
+        `<b>High risk</b> (${list} &gt; 30% of max loss): At this risk you blow the account after ${n} losses in a row.`));
     }
     if (s.consistency < 100) {
       const dayWin = s.riskEval * s.rr * s.tradesPerDay;
       const limit = s.consistency / 100 * s.profitTarget;
       if (dayWin > limit) {
-        out.push(`<b>Consistency:</b> výherní den v evaluaci (${fmtUsd(dayWin)}) je víc než ${s.consistency} % targetu (${fmtUsd(limit)}). ` +
-          `Jeden výherní den poruší consistency, potřebuješ vyšší celkový zisk (aspoň ${fmtUsd(Math.ceil(dayWin / (s.consistency / 100)))}).`);
+        const need = fmtUsd(Math.ceil(dayWin / (s.consistency / 100)));
+        out.push(tx(`<b>Consistency:</b> výherní den v evaluaci (${fmtUsd(dayWin)}) je víc než ${s.consistency} % targetu (${fmtUsd(limit)}). ` +
+          `Jeden výherní den poruší consistency, potřebuješ vyšší celkový zisk (aspoň ${need}).`,
+          `<b>Consistency:</b> a winning day in the evaluation (${fmtUsd(dayWin)}) is more than ${s.consistency}% of the target (${fmtUsd(limit)}). ` +
+          `One winning day breaks consistency, you need a higher total profit (at least ${need}).`));
       }
     }
     if (s.dailyLoss > 0) {
       const dll = risks.filter(([, r]) => r * s.tradesPerDay > s.dailyLoss);
       if (dll.length) {
-        out.push(`<b>Daily loss limit:</b> riziko × ${s.tradesPerDay} obchodů denně (${dll.map(([l, r]) => `${l} ${fmtUsd(r * s.tradesPerDay)}`).join(', ')}) ` +
-          `přesahuje DLL ${fmtUsd(s.dailyLoss)} – ve špatný den nestihneš všechny obchody (model po dosažení DLL přestane obchodovat).`);
+        const list = dll.map(([l, r]) => `${l} ${fmtUsd(r * s.tradesPerDay)}`).join(', ');
+        out.push(tx(`<b>Daily loss limit:</b> riziko × ${s.tradesPerDay} obchodů denně (${list}) přesahuje DLL ${fmtUsd(s.dailyLoss)} – ve špatný den nestihneš všechny obchody (model po dosažení DLL přestane obchodovat).`,
+          `<b>Daily loss limit:</b> risk × ${s.tradesPerDay} trades per day (${list}) exceeds the DLL of ${fmtUsd(s.dailyLoss)} – on a bad day you won't get all trades in (the model stops trading once the DLL is hit).`));
       }
     }
     $('warnings').innerHTML = out.map((t) => `<div class="warn">${t}</div>`).join('');
@@ -722,37 +745,39 @@
   // ---------- vykreslení ----------
   function render(r) {
     const m = r.money;
+    renderStatus(r);
     $('kEval').textContent = fmtPct(r.pEval);
-    $('kEvalSub').textContent = r.time.eval.median != null ? `medián ${r.time.eval.median} dní` : '';
+    $('kEvalSub').textContent = r.time.eval.median != null ? tx(`medián ${r.time.eval.median} dní`, `median ${r.time.eval.median} days`) : '';
     $('kFunded').textContent = fmtPct(r.pFunded);
-    $('kFundedSub').textContent = r.time.funded.median != null ? `medián ${r.time.funded.median} dní` : '';
+    $('kFundedSub').textContent = r.time.funded.median != null ? tx(`medián ${r.time.funded.median} dní`, `median ${r.time.funded.median} days`) : '';
     $('kTotal').textContent = fmtPct(r.pTotal);
-    $('kTotalSub').textContent = `≈ 1 z ${r.pTotal > 0 ? fmtNum(1 / r.pTotal, 1) : '∞'} účtů`;
+    $('kTotalSub').textContent = tx(`≈ 1 z ${r.pTotal > 0 ? fmtNum(1 / r.pTotal, 1) : '∞'} účtů`, `≈ 1 in ${r.pTotal > 0 ? fmtNum(1 / r.pTotal, 1) : '∞'} accounts`);
     $('kAny').textContent = fmtPct(m.pAny);
-    $('kAnySub').textContent = `${m.attempts} ${m.attempts === 1 ? 'pokus' : m.attempts < 5 && m.attempts > 0 ? 'pokusy' : 'pokusů'}` + (m.manualAttempts ? ' (ručně)' : ' z rozpočtu');
+    $('kAnySub').textContent = `${m.attempts} ` + tx(m.attempts === 1 ? 'pokus' : m.attempts < 5 && m.attempts > 0 ? 'pokusy' : 'pokusů', m.attempts === 1 ? 'attempt' : 'attempts') +
+      (m.manualAttempts ? tx(' (ručně)', ' (manual)') : tx(' z rozpočtu', ' from budget'));
 
     const cls = (x) => x >= 0 ? 'pos' : 'neg';
     const rows = [
-      ['Cena jednoho pokusu', `${fmtCzk(m.attemptCzk)} <span style="color:var(--muted);font-weight:400">(${fmtUsd(m.attemptUsd)})</span>`],
-      ['Počet pokusů v rozpočtu', `${m.attempts}`],
-      ['Očekávaný počet pokusů do 1. výplaty', fmtNum(m.expAttemptsToPayout, 1)],
-      ['Očekávané náklady do 1. výplaty', fmtCzk(m.expCostToPayout)],
-      ['Výplata po splitu a rezervě na daně', fmtCzk(m.payoutCzk)],
-      ['Očekávané náklady v rámci rozpočtu', fmtCzk(m.expCostInBudget)],
-      ['Očekávaný čistý výsledek (rozpočet)', `<span class="${cls(m.expNet)}">${m.expNet >= 0 ? '+' : ''}${fmtCzk(m.expNet)}</span>`],
-      ['Očekávaná hodnota jednoho pokusu', `<span class="${cls(m.evPerAttempt)}">${m.evPerAttempt >= 0 ? '+' : ''}${fmtCzk(m.evPerAttempt)}</span>`],
-      ['Prohraješ celý rozpočet bez výplaty', `<span class="neg">${fmtPct(m.pLoseAll)}</span>`],
+      [tx('Cena jednoho pokusu', 'Cost of one attempt'), `${fmtCzk(m.attemptCzk)} <span style="color:var(--muted);font-weight:400">(${fmtUsd(m.attemptUsd)})</span>`],
+      [tx('Počet pokusů v rozpočtu', 'Attempts in budget'), `${m.attempts}`],
+      [tx('Očekávaný počet pokusů do 1. výplaty', 'Expected attempts to 1st payout'), fmtNum(m.expAttemptsToPayout, 1)],
+      [tx('Očekávané náklady do 1. výplaty', 'Expected cost to 1st payout'), fmtCzk(m.expCostToPayout)],
+      [tx('Výplata po splitu a rezervě na daně', 'Payout after split and tax reserve'), fmtCzk(m.payoutCzk)],
+      [tx('Očekávané náklady v rámci rozpočtu', 'Expected cost within budget'), fmtCzk(m.expCostInBudget)],
+      [tx('Očekávaný čistý výsledek (rozpočet)', 'Expected net result (budget)'), `<span class="${cls(m.expNet)}">${m.expNet >= 0 ? '+' : ''}${fmtCzk(m.expNet)}</span>`],
+      [tx('Očekávaná hodnota jednoho pokusu', 'Expected value of one attempt'), `<span class="${cls(m.evPerAttempt)}">${m.evPerAttempt >= 0 ? '+' : ''}${fmtCzk(m.evPerAttempt)}</span>`],
+      [tx('Prohraješ celý rozpočet bez výplaty', 'Lose the whole budget without a payout'), `<span class="neg">${fmtPct(m.pLoseAll)}</span>`],
     ];
     $('money').innerHTML = rows.map(([a, b]) => `<tr><td>${a}</td><td>${b}</td></tr>`).join('');
 
     const t = r.time;
     const trow = (name, s) => `<tr><td>${name}</td><td>${s.median ?? '–'}</td><td>${s.p80 ?? '–'}</td><td>${fmtNum(s.n)}</td></tr>`;
-    $('time').innerHTML = trow('Evaluace', t.eval) + trow('Funded do 1. výplaty', t.funded) + trow('Celkem', t.total);
+    $('time').innerHTML = trow(tx('Evaluace', 'Evaluation'), t.eval) + trow(tx('Funded do 1. výplaty', 'Funded to 1st payout'), t.funded) + trow(tx('Celkem', 'Total'), t.total);
 
     const diff = r.sensitivity.some((s) => s.winRateFunded !== s.winRate);
-    $('sensHead').textContent = diff ? 'Úspěšnost eval / funded' : 'Úspěšnost';
+    $('sensHead').textContent = diff ? tx('Úspěšnost eval / funded', 'Win rate eval / funded') : tx('Úspěšnost', 'Win rate');
     $('sens').innerHTML = r.sensitivity.map((s) =>
-      `<tr class="${s.current ? 'current' : ''}"><td>${fmtWr(s.winRate)}${s.winRateFunded !== s.winRate ? ' / ' + fmtWr(s.winRateFunded) : ''}${s.current ? ' ◂ aktuální' : ''}</td>` +
+      `<tr class="${s.current ? 'current' : ''}"><td>${fmtWr(s.winRate)}${s.winRateFunded !== s.winRate ? ' / ' + fmtWr(s.winRateFunded) : ''}${s.current ? tx(' ◂ aktuální', ' ◂ current') : ''}</td>` +
       `<td>${fmtPct(s.pEval)}</td><td>${fmtPct(s.pFunded)}</td><td>${fmtPct(s.pTotal)}</td><td>${fmtPct(s.pAny)}</td></tr>`).join('');
 
     lastResult = r;
@@ -768,22 +793,22 @@
     return Math.max(320, Math.min(1000, w || 860));
   }
 
-  const fmtWr = (x) => fmtNum(x, x % 1 ? 1 : 0) + ' %';
+  const fmtWr = (x) => fmtNum(x, x % 1 ? 1 : 0) + PCT();
 
   function renderLife(r) {
     const L = r.life, m = r.money, cls = (x) => x >= 0 ? 'pos' : 'neg';
     const back = m.attemptCzk > 0 ? L.payoutsPerAttempt * m.payoutCzk / m.attemptCzk : 0;
     const rows = [
-      ['Průměrný počet výplat na funded účet', fmtNum(L.payoutsPerFunded, 2)],
-      ['Průměrný počet výplat na 1 pokus <small>(vč. neprojitých evaluací)</small>', fmtNum(L.payoutsPerAttempt, 2)],
-      ['Průměrně vybereš z funded účtu', fmtCzk(L.payoutsTotalCzk)],
-      ['Očekávaná hodnota pokusu (všechny výplaty)', `<span class="${cls(L.evPerAttempt)}">${L.evPerAttempt >= 0 ? '+' : ''}${fmtCzk(L.evPerAttempt)}</span>`],
-      [`1 ${curSym()} za pokus vrátí průměrně`, fmtNum(back, 1) + ' ' + curSym()],
-      ['Délka funded účtu (medián / 80 %)', L.lifeDays.n ? `${L.lifeDays.median} / ${L.lifeDays.p80} dní` : '–'],
+      [tx('Průměrný počet výplat na funded účet', 'Average payouts per funded account'), fmtNum(L.payoutsPerFunded, 2)],
+      [tx('Průměrný počet výplat na 1 pokus <small>(vč. neprojitých evaluací)</small>', 'Average payouts per attempt <small>(incl. failed evaluations)</small>'), fmtNum(L.payoutsPerAttempt, 2)],
+      [tx('Průměrně vybereš z funded účtu', 'Average withdrawn from a funded account'), fmtCzk(L.payoutsTotalCzk)],
+      [tx('Očekávaná hodnota pokusu (všechny výplaty)', 'Expected value of an attempt (all payouts)'), `<span class="${cls(L.evPerAttempt)}">${L.evPerAttempt >= 0 ? '+' : ''}${fmtCzk(L.evPerAttempt)}</span>`],
+      [tx(`1 ${curSym()} za pokus vrátí průměrně`, `Each 1 ${curSym()} spent returns on average`), fmtNum(back, 1) + ' ' + curSym()],
+      [tx('Délka funded účtu (medián / 80 %)', 'Funded account lifetime (median / 80%)'), L.lifeDays.n ? `${L.lifeDays.median} / ${L.lifeDays.p80} ${tx('dní', 'days')}` : '–'],
     ];
     $('life').innerHTML = rows.map(([a, b]) => `<tr><td>${a}</td><td>${b}</td></tr>`).join('');
     const d = L.payoutDist, max = Math.max(...d, 0.0001), cap = state.maxPayouts > 0;
-    const word = (n) => n === 1 ? 'výplata' : n >= 2 && n <= 4 ? 'výplaty' : 'výplat';
+    const word = (n) => tx(n === 1 ? 'výplata' : n >= 2 && n <= 4 ? 'výplaty' : 'výplat', n === 1 ? 'payout' : 'payouts');
     $('lifeDist').innerHTML = d.map((v, i) =>
       `<div class="row ${i === 0 ? 'zero' : ''}"><span>${i} ${word(i)}${cap && i === d.length - 1 && i === state.maxPayouts ? ' (limit)' : ''}</span>` +
       `<div><div class="bar" style="width:${(v / max * 100).toFixed(1)}%"></div></div><span>${fmtPct(v)}</span></div>`).join('');
@@ -791,26 +816,31 @@
 
   function renderBreakEven(r) {
     const b = r.breakeven, cur = Number(state.winRate);
-    const fmtB = (x) => x.below ? 'pod 10 %' : x.above ? 'nad 95 %' : fmtNum(x.wr, 1) + ' %';
+    const fmtB = (x) => x.below ? tx('pod 10 %', 'below 10%') : x.above ? tx('nad 95 %', 'above 95%') : fmtNum(x.wr, 1) + PCT();
     const margin = (x) => {
-      if (x.below) return '<span class="pos">splněno s velkou rezervou</span>';
-      if (x.above) return '<span class="neg">nedosažitelné do 95 %</span>';
+      if (x.below) return `<span class="pos">${tx('splněno s velkou rezervou', 'met with a large margin')}</span>`;
+      if (x.above) return `<span class="neg">${tx('nedosažitelné do 95 %', 'not reachable up to 95%')}</span>`;
       const d = cur - x.wr;
-      return d >= 0 ? `<span class="pos">máš rezervu +${fmtNum(d, 1)} p. b.</span>` : `<span class="neg">chybí ti ${fmtNum(-d, 1)} p. b.</span>`;
+      return d >= 0 ? `<span class="pos">${tx(`máš rezervu +${fmtNum(d, 1)} p. b.`, `you have a +${fmtNum(d, 1)} pp margin`)}</span>` : `<span class="neg">${tx(`chybí ti ${fmtNum(-d, 1)} p. b.`, `you are ${fmtNum(-d, 1)} pp short`)}</span>`;
     };
     const tiles = [
-      ['Kladný zisk na pokus<br><small>(všechny výplaty)</small>', b.evAll, true],
-      ['Kladný zisk na pokus<br><small>(jen 1. výplata)</small>', b.evFirst, false],
-      ['50% šance na výplatu<br><small>v rámci rozpočtu</small>', b.pAny50, false],
-      ['90% šance na výplatu<br><small>v rámci rozpočtu</small>', b.pAny90, false],
+      [tx('Kladný zisk na pokus<br><small>(všechny výplaty)</small>', 'Positive profit per attempt<br><small>(all payouts)</small>'), b.evAll, true],
+      [tx('Kladný zisk na pokus<br><small>(jen 1. výplata)</small>', 'Positive profit per attempt<br><small>(1st payout only)</small>'), b.evFirst, false],
+      [tx('50% šance na výplatu<br><small>v rámci rozpočtu</small>', '50% chance of a payout<br><small>within budget</small>'), b.pAny50, false],
+      [tx('90% šance na výplatu<br><small>v rámci rozpočtu</small>', '90% chance of a payout<br><small>within budget</small>'), b.pAny90, false],
     ];
     $('beTiles').innerHTML = tiles.map(([l, x, main]) =>
       `<div class="be ${main ? 'main' : ''}"><div class="l">${l}</div><div class="v">${fmtB(x)}</div><div class="m">${margin(x)}</div></div>`).join('');
     $('beChart').innerHTML = breakEvenSvg(b, cur);
     const d = b.delta;
-    $('beNote').innerHTML = `Úspěšnost = evaluace${Math.abs(d) > 0.01 ? `; funded se posouvá o stejný rozdíl jako teď (${d > 0 ? '+' : ''}${fmtNum(d, 1)} p. b.)` : ' i funded'}. ` +
+    const dd = `${d > 0 ? '+' : ''}${fmtNum(d, 1)}`;
+    $('beNote').innerHTML = tx(
+      `Úspěšnost = evaluace${Math.abs(d) > 0.01 ? `; funded se posouvá o stejný rozdíl jako teď (${dd} p. b.)` : ' i funded'}. ` +
       `Pro srovnání: čistě matematická hranice jednoho obchodu při R:R ${fmtNum(state.rr, 2)} je ${fmtNum(b.perTrade, 1)} %. Pravidla účtu (drawdown, target, consistency) a cena pokusu ji posouvají.` +
-      `<small>Každý bod křivky = ${fmtNum(b.runs)} běhů se stejnou náhodou, krok 2,5 %, hranice dopočtená mezi body. Přesnost zhruba ±1 p. b.</small>`;
+      `<small>Každý bod křivky = ${fmtNum(b.runs)} běhů se stejnou náhodou, krok 2,5 %, hranice dopočtená mezi body. Přesnost zhruba ±1 p. b.</small>`,
+      `Win rate = evaluation${Math.abs(d) > 0.01 ? `; funded shifts by the same difference as now (${dd} pp)` : ' and funded'}. ` +
+      `For comparison: the pure math break-even of a single trade at R:R ${fmtNum(state.rr, 2)} is ${fmtNum(b.perTrade, 1)}%. Account rules (drawdown, target, consistency) and the attempt cost shift it.` +
+      `<small>Each curve point = ${fmtNum(b.runs)} runs with the same randomness, step 2.5%, threshold interpolated between points. Accuracy about ±1 pp.</small>`);
   }
 
   function breakEvenSvg(b, cur) {
@@ -823,36 +853,36 @@
     const xOf = (wr) => L + (wr - 10) / 85 * iw;
     const yOf = (v) => T + (hi - v) / (hi - lo) * ih;
     const path = (key) => c.map((p, i) => (i ? 'L' : 'M') + xOf(p.wr).toFixed(1) + ' ' + yOf(p[key]).toFixed(1)).join('');
-    let s = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Zisk na pokus podle úspěšnosti">`;
+    let s = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${tx('Zisk na pokus podle úspěšnosti', 'Profit per attempt by win rate')}">`;
     s += `<rect class="neg-zone" x="${L}" y="${yOf(0)}" width="${iw}" height="${T + ih - yOf(0)}"/>`;
     for (const tv of niceTicks(lo, hi, 5)) {
       const y = yOf(tv);
       s += `<line class="gridl" x1="${L}" x2="${W - R}" y1="${y}" y2="${y}"/><text x="${L - 6}" y="${y + 4}" text-anchor="end">${tv === 0 ? '0' : fmtNum(tv / 1000, tv % 1000 ? 1 : 0) + 'k'} ${curSym()}</text>`;
     }
     s += `<line class="zero" x1="${L}" x2="${W - R}" y1="${yOf(0)}" y2="${yOf(0)}"/>`;
-    for (const tv of [10, 20, 30, 40, 50, 60, 70, 80, 90]) s += `<text x="${xOf(tv)}" y="${H - 22}" text-anchor="middle">${tv} %</text>`;
-    s += `<text x="${L + iw / 2}" y="${H - 4}" text-anchor="middle">úspěšnost obchodů (evaluace)</text>`;
+    for (const tv of [10, 20, 30, 40, 50, 60, 70, 80, 90]) s += `<text x="${xOf(tv)}" y="${H - 22}" text-anchor="middle">${tv}${PCT()}</text>`;
+    s += `<text x="${L + iw / 2}" y="${H - 4}" text-anchor="middle">${tx('úspěšnost obchodů (evaluace)', 'trade win rate (evaluation)')}</text>`;
     if (b.evAll.wr != null) {
       const x = xOf(b.evAll.wr);
-      s += `<line class="be-mark" x1="${x}" x2="${x}" y1="${T}" y2="${T + ih}"/><text x="${x - 5}" y="${T + 12}" text-anchor="end">hranice ${fmtNum(b.evAll.wr, 1)} %</text>`;
+      s += `<line class="be-mark" x1="${x}" x2="${x}" y1="${T}" y2="${T + ih}"/><text x="${x - 5}" y="${T + 12}" text-anchor="end">${tx('hranice', 'threshold')} ${fmtNum(b.evAll.wr, 1)}${PCT()}</text>`;
     }
     if (cur >= 10 && cur <= 95) {
       const x = xOf(cur);
-      s += `<line class="cur-mark" x1="${x}" x2="${x}" y1="${T}" y2="${T + ih}"/><text x="${x + 5}" y="${T + 12}">tvých ${fmtNum(cur, cur % 1 ? 1 : 0)} %</text>`;
+      s += `<line class="cur-mark" x1="${x}" x2="${x}" y1="${T}" y2="${T + ih}"/><text x="${x + 5}" y="${T + 12}">${tx('tvých', 'yours')} ${fmtNum(cur, cur % 1 ? 1 : 0)}${PCT()}</text>`;
     }
     s += `<path class="ev-first" d="${path('evFirst')}"/><path class="ev-all" d="${path('evAll')}"/>`;
-    for (const p of c) s += `<circle cx="${xOf(p.wr)}" cy="${yOf(p.evAll)}" r="6" fill="transparent"><title>${fmtNum(p.wr, 1)} %: zisk na pokus ${fmtCzk(p.evAll)} (jen 1. výplata ${fmtCzk(p.evFirst)}), šance na výplatu v rozpočtu ${fmtPct(p.pAny)}</title></circle>`;
+    for (const p of c) s += `<circle cx="${xOf(p.wr)}" cy="${yOf(p.evAll)}" r="6" fill="transparent"><title>${fmtNum(p.wr, 1)}${PCT()}: ${tx(`zisk na pokus ${fmtCzk(p.evAll)} (jen 1. výplata ${fmtCzk(p.evFirst)}), šance na výplatu v rozpočtu ${fmtPct(p.pAny)}`, `profit per attempt ${fmtCzk(p.evAll)} (1st payout only ${fmtCzk(p.evFirst)}), chance of a payout within budget ${fmtPct(p.pAny)}`)}</title></circle>`;
     return s + '</svg>' +
-      `<div class="legend"><span><i style="border-color:var(--accent)"></i>zisk na pokus – všechny výplaty</span>` +
-      `<span><i style="border-color:var(--muted);border-top-style:dashed"></i>zisk na pokus – jen 1. výplata</span>` +
-      `<span><i style="border-color:var(--bad);border-top-width:8px;opacity:.2"></i>ztráta</span></div>`;
+      `<div class="legend"><span><i style="border-color:var(--accent)"></i>${tx('zisk na pokus – všechny výplaty', 'profit per attempt – all payouts')}</span>` +
+      `<span><i style="border-color:var(--muted);border-top-style:dashed"></i>${tx('zisk na pokus – jen 1. výplata', 'profit per attempt – 1st payout only')}</span>` +
+      `<span><i style="border-color:var(--bad);border-top-width:8px;opacity:.2"></i>${tx('ztráta', 'loss')}</span></div>`;
   }
 
   const METRICS = {
-    rate: { better: 1, fmt: (v) => fmtNum(v, 0), get name() { return `zisk za obchodní den (${curSym()})`; } },
-    pTotal: { better: 1, fmt: (v) => fmtPct(v, 0), name: 'šance na 1. výplatu' },
-    ev: { better: 1, fmt: (v) => (v >= 0 ? '+' : '') + fmtNum(v / 1000, 1) + 'k', name: 'očekávaný zisk na pokus' },
-    days: { better: -1, fmt: (v) => v == null ? '–' : fmtNum(v, 0), name: 'medián dní do 1. výplaty' },
+    rate: { better: 1, fmt: (v) => fmtNum(v, 0), get name() { return tx(`zisk za obchodní den (${curSym()})`, `profit per trading day (${curSym()})`); } },
+    pTotal: { better: 1, fmt: (v) => fmtPct(v, 0), get name() { return tx('šance na 1. výplatu', 'chance of 1st payout'); } },
+    ev: { better: 1, fmt: (v) => (v >= 0 ? '+' : '') + fmtNum(v / 1000, 1) + 'k', get name() { return tx('očekávaný zisk na pokus', 'expected profit per attempt'); } },
+    days: { better: -1, fmt: (v) => v == null ? '–' : fmtNum(v, 0), get name() { return tx('medián dní do 1. výplaty', 'median days to 1st payout'); } },
   };
 
   function optCells(r) {
@@ -879,7 +909,7 @@
     $('targetDays').value = target;
     $('targetDaysVal').textContent = target;
     const cells = optCells(r), flat = cells.flat().filter((c) => c[metric] != null);
-    if (!flat.length) { $('heat').innerHTML = ''; $('optSum').textContent = 'Žádné úspěšné běhy.'; return; }
+    if (!flat.length) { $('heat').innerHTML = ''; $('optSum').textContent = tx('Žádné úspěšné běhy.', 'No successful runs.'); return; }
     const score = (c) => c[metric] == null ? -Infinity : M.better * c[metric];
     // nejlepší; při shodě (do 0,5 p. b. / 1 %) vyhrává rychlejší
     const pool = flat.filter((c) => c.days != null && c.days <= target);
@@ -902,11 +932,12 @@
       if (M.better < 0) t = 1 - t;
       return `color-mix(in srgb, var(--accent) ${(6 + t * 52).toFixed(0)}%, transparent)`;
     };
-    let h = `<tr><th class="corner">evaluace ↓<br>funded →</th>${o.grid.map((rf, j) => `<th>${rf} $<br><span style="color:var(--muted);font-weight:400">po zam. ${o.after[j]}</span></th>`).join('')}</tr>`;
+    let h = `<tr><th class="corner">${tx('evaluace', 'evaluation')} ↓<br>funded →</th>${o.grid.map((rf, j) => `<th>${rf} $<br><span style="color:var(--muted);font-weight:400">${tx('po zam.', 'post-lock')} ${o.after[j]}</span></th>`).join('')}</tr>`;
     for (const row of cells) {
       h += `<tr><th>${row[0].re} $</th>` + row.map((c) => {
         const cur = c.re === state.riskEval && c.rf === state.riskFundedBefore;
-        const tip = `Evaluace ${c.re} $, funded ${c.rf} $ (po zamčení ${c.rfAfter} $)\nŠance na 1. výplatu: ${fmtPct(c.pTotal)}\nOčekávaný zisk na pokus: ${fmtCzk(c.ev)}\nDní do 1. výplaty: medián ${c.days ?? '–'}, 80 % do ${c.days80 ?? '–'}\nZisk za obchodní den: ${fmtCzk(c.rate)}`;
+        const tip = tx(`Evaluace ${c.re} $, funded ${c.rf} $ (po zamčení ${c.rfAfter} $)\nŠance na 1. výplatu: ${fmtPct(c.pTotal)}\nOčekávaný zisk na pokus: ${fmtCzk(c.ev)}\nDní do 1. výplaty: medián ${c.days ?? '–'}, 80 % do ${c.days80 ?? '–'}\nZisk za obchodní den: ${fmtCzk(c.rate)}`,
+          `Evaluation ${c.re} $, funded ${c.rf} $ (after lock ${c.rfAfter} $)\nChance of 1st payout: ${fmtPct(c.pTotal)}\nExpected profit per attempt: ${fmtCzk(c.ev)}\nDays to 1st payout: median ${c.days ?? '–'}, 80% within ${c.days80 ?? '–'}\nProfit per trading day: ${fmtCzk(c.rate)}`);
         const over = c.days == null || c.days > target;
         return `<td><button type="button" class="${c === best ? 'best' : ''} ${cur ? 'cur' : ''} ${over ? 'over' : ''}" style="--cell:${bg(c[metric])}" data-re="${c.re}" data-rf="${c.rf}" data-ra="${c.rfAfter}" title="${tip}">${M.fmt(c[metric])}</button></td>`;
       }).join('') + '</tr>';
@@ -932,28 +963,41 @@
     const cur = { re: state.riskEval, rf: state.riskFundedBefore, rfAfter: state.riskFundedAfter, pTotal: r.pTotal,
       days: r.time.total.median, days80: r.time.total.p80, ev: L.evPerAttempt, rate: L.profitPerDay, daysPerAttempt: L.daysPerAttempt };
     const rec = (title, sub, c, cls, clickable) =>
-      `<div class="rec ${cls}">${clickable ? `<button type="button" class="rec-set" data-re="${c.re}" data-rf="${c.rf}" data-ra="${c.rfAfter}">Nastavit</button>` : ''}` +
+      `<div class="rec ${cls}">${clickable ? `<button type="button" class="rec-set" data-re="${c.re}" data-rf="${c.rf}" data-ra="${c.rfAfter}">${tx('Nastavit', 'Apply')}</button>` : ''}` +
       `<div class="rec-t">${title}</div><div class="rec-s">${sub}</div>` +
-      `<div class="rec-risk"><b>${c.re} $ <span>eval</span></b><b>${c.rf} $ <span>funded</span></b><b>${c.rfAfter} $ <span>po zamčení</span></b></div>` +
-      `<dl><dt>Zisk za obchodní den</dt><dd>${fmtCzk(c.rate)}</dd>` +
-      `<dt>Šance na 1. výplatu</dt><dd>${fmtPct(c.pTotal)}</dd>` +
-      `<dt>Dní do 1. výplaty (medián / 80 %)</dt><dd>${c.days ?? '–'} / ${c.days80 ?? '–'}</dd>` +
-      `<dt>Zisk na pokus</dt><dd>${fmtCzk(c.ev)}</dd></dl></div>`;
+      `<div class="rec-risk"><b>${c.re} $ <span>eval</span></b><b>${c.rf} $ <span>funded</span></b><b>${c.rfAfter} $ <span>${tx('po zamčení', 'after lock')}</span></b></div>` +
+      `<dl><dt>${tx('Zisk za obchodní den', 'Profit per trading day')}</dt><dd>${fmtCzk(c.rate)}</dd>` +
+      `<dt>${tx('Šance na 1. výplatu', 'Chance of 1st payout')}</dt><dd>${fmtPct(c.pTotal)}</dd>` +
+      `<dt>${tx('Dní do 1. výplaty (medián / 80 %)', 'Days to 1st payout (median / 80%)')}</dt><dd>${c.days ?? '–'} / ${c.days80 ?? '–'}</dd>` +
+      `<dt>${tx('Zisk na pokus', 'Profit per attempt')}</dt><dd>${fmtCzk(c.ev)}</dd></dl></div>`;
     $('recs').innerHTML =
-      rec(`Nejlepší do ${target} dní`, fits.length ? `nejvyšší šance na výplatu s mediánem do ${target} obchodních dní`
-        : `do ${target} dní to nejde – tohle je nejrychlejší možnost`, inTime, 'opt', true) +
-      rec('Max zisk za den', `nejvíc ${curSym()} za obchodní den dlouhodobě, ale s nižší šancí na první účet`, optimum, 'rate', true) +
-      rec('Tvoje nastavení', cur.days != null && cur.days <= target
-        ? `vejde se do ${target} dní, šance ${cur.pTotal >= inTime.pTotal - 0.01 ? 'je na maximu' : `o ${fmtNum((inTime.pTotal - cur.pTotal) * 100, 0)} p. b. nižší než doporučení`}`
-        : `medián ${cur.days ?? '–'} dní je nad tvým cílem`, cur, 'cur', false);
-    const curTxt = `Aktuálně (${state.riskEval} $ / ${state.riskFundedBefore} $ / ${state.riskFundedAfter} $): šance ${fmtPct(r.pTotal)}, ` +
-      `zisk na pokus ${fmtCzk(r.life.evPerAttempt)}, medián ${r.time.total.median ?? "–"} dní.`;
-    $('optSum').innerHTML = `Šrafované buňky mají medián dní do 1. výplaty nad ${target} dní. <b>Nejlepší v tvém čase pro „${M.name}“:</b> evaluace ${best.re} $, funded ${best.rf} $ (po zamčení ${best.rfAfter} $) → ` +
-      `šance ${fmtPct(best.pTotal)}, zisk na pokus ${fmtCzk(best.ev)}, medián ${best.days ?? "–"} dní do 1. výplaty.<br>${curTxt}` +
+      rec(tx(`Nejlepší do ${target} dní`, `Best within ${target} days`), fits.length
+        ? tx(`nejvyšší šance na výplatu s mediánem do ${target} obchodních dní`, `highest payout chance with a median within ${target} trading days`)
+        : tx(`do ${target} dní to nejde – tohle je nejrychlejší možnost`, `not possible within ${target} days – this is the fastest option`), inTime, 'opt', true) +
+      rec(tx('Max zisk za den', 'Max profit per day'), tx(`nejvíc ${curSym()} za obchodní den dlouhodobě, ale s nižší šancí na první účet`,
+        `most ${curSym()} per trading day long-term, but a lower chance on the first account`), optimum, 'rate', true) +
+      rec(tx('Tvoje nastavení', 'Your settings'), cur.days != null && cur.days <= target
+        ? (cur.pTotal >= inTime.pTotal - 0.01
+          ? tx(`vejde se do ${target} dní, šance je na maximu`, `fits within ${target} days, the chance is at the maximum`)
+          : tx(`vejde se do ${target} dní, šance o ${fmtNum((inTime.pTotal - cur.pTotal) * 100, 0)} p. b. nižší než doporučení`,
+            `fits within ${target} days, chance ${fmtNum((inTime.pTotal - cur.pTotal) * 100, 0)} pp lower than recommended`))
+        : tx(`medián ${cur.days ?? '–'} dní je nad tvým cílem`, `median of ${cur.days ?? '–'} days is above your target`), cur, 'cur', false);
+    const rs = `${state.riskEval} $ / ${state.riskFundedBefore} $ / ${state.riskFundedAfter} $`;
+    const curTxt = tx(`Aktuálně (${rs}): šance ${fmtPct(r.pTotal)}, zisk na pokus ${fmtCzk(r.life.evPerAttempt)}, medián ${r.time.total.median ?? '–'} dní.`,
+      `Current (${rs}): chance ${fmtPct(r.pTotal)}, profit per attempt ${fmtCzk(r.life.evPerAttempt)}, median ${r.time.total.median ?? '–'} days.`);
+    $('optSum').innerHTML = tx(
+      `Šrafované buňky mají medián dní do 1. výplaty nad ${target} dní. <b>Nejlepší v tvém čase pro „${M.name}“:</b> evaluace ${best.re} $, funded ${best.rf} $ (po zamčení ${best.rfAfter} $) → ` +
+      `šance ${fmtPct(best.pTotal)}, zisk na pokus ${fmtCzk(best.ev)}, medián ${best.days ?? '–'} dní do 1. výplaty.<br>${curTxt}` +
       `<small>Riziko po zamčení drží aktuální poměr ×${fmtNum(o.ratio, 2)} k riziku před zamčením. Každá hodnota rizika = ${fmtNum(o.runs)} běhů, ` +
       `sousední buňky se mohou lišit o ~1 p. b. náhodou. Při shodě vyhrává rychlejší varianta. ● = aktuální nastavení. ` +
       `Zisk za obchodní den = očekávaný zisk z pokusu (všechny výplaty − cena) / průměrný počet obchodních dní, které pokus zabere (evaluace vč. neúspěšných + celý funded účet). ` +
-      `Říká, kolik ti obchodování dlouhodobě vydělá za den, když pokusy opakuješ.</small>`;
+      `Říká, kolik ti obchodování dlouhodobě vydělá za den, když pokusy opakuješ.</small>`,
+      `Hatched cells have a median above ${target} days to the 1st payout. <b>Best within your time for “${M.name}”:</b> evaluation ${best.re} $, funded ${best.rf} $ (after lock ${best.rfAfter} $) → ` +
+      `chance ${fmtPct(best.pTotal)}, profit per attempt ${fmtCzk(best.ev)}, median ${best.days ?? '–'} days to the 1st payout.<br>${curTxt}` +
+      `<small>Risk after lock keeps the current ratio ×${fmtNum(o.ratio, 2)} to risk before lock. Each risk value = ${fmtNum(o.runs)} runs, ` +
+      `neighbouring cells may differ by ~1 pp by chance. On a tie the faster option wins. ● = current setting. ` +
+      `Profit per trading day = expected profit per attempt (all payouts − cost) / average number of trading days an attempt takes (evaluation incl. failures + the whole funded account). ` +
+      `It tells how much trading earns you per day long-term when you keep repeating attempts.</small>`);
   }
 
   function niceTicks(min, max, count) {
@@ -967,7 +1011,7 @@
   }
 
   function histogramSvg(h, total) {
-    if (!h.bins.length) return '<div class="empty">Žádný úspěšný běh – není co zobrazit.</div>';
+    if (!h.bins.length) return `<div class="empty">${tx('Žádný úspěšný běh – není co zobrazit.', 'No successful run – nothing to show.')}</div>`;
     const W = chartWidth('hist'), H = 270, L = 48, R = 12, T = 14, B = 42;
     const iw = W - L - R, ih = H - T - B;
     const maxC = Math.max(...h.bins);
@@ -976,16 +1020,16 @@
     const x0 = h.start, x1 = h.start + n * h.width; // rozsah dní
     const xOf = (d) => L + (d - x0) / (x1 - x0) * iw;
     const sum = h.bins.reduce((a, b) => a + b, 0) + (h.overflow || 0);
-    let s = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Histogram dní do první výplaty">`;
+    let s = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${tx('Histogram dní do první výplaty', 'Histogram of days to the first payout')}">`;
     for (const tv of niceTicks(0, maxC, 4)) {
       const y = T + ih - tv / maxC * ih;
-      s += `<line class="gridl" x1="${L}" x2="${W - R}" y1="${y}" y2="${y}"/><text x="${L - 6}" y="${y + 4}" text-anchor="end">${fmtNum(tv / sum * 100, 1)} %</text>`;
+      s += `<line class="gridl" x1="${L}" x2="${W - R}" y1="${y}" y2="${y}"/><text x="${L - 6}" y="${y + 4}" text-anchor="end">${fmtNum(tv / sum * 100, 1)}${PCT()}</text>`;
     }
     h.bins.forEach((c, i) => {
       const bh = c / maxC * ih;
       const from = h.start + i * h.width, to = from + h.width - 1;
-      const label = h.width === 1 ? `${from} dní` : `${from}–${to} dní`;
-      s += `<rect class="bar" x="${L + i * bw + 1}" y="${T + ih - bh}" width="${Math.max(1, bw - 2)}" height="${bh}" rx="2"><title>${label}: ${fmtPct(c / sum)} (${fmtNum(c)} běhů)</title></rect>`;
+      const label = (h.width === 1 ? `${from}` : `${from}–${to}`) + ' ' + tx('dní', 'days');
+      s += `<rect class="bar" x="${L + i * bw + 1}" y="${T + ih - bh}" width="${Math.max(1, bw - 2)}" height="${bh}" rx="2"><title>${label}: ${fmtPct(c / sum)} (${fmtNum(c)} ${tx('běhů', 'runs')})</title></rect>`;
     });
     s += `<line class="axis" x1="${L}" x2="${W - R}" y1="${T + ih}" y2="${T + ih}"/>`;
     for (const tv of niceTicks(x0, x1 - 1, Math.max(4, Math.round(iw / 80)))) {
@@ -993,13 +1037,13 @@
       const x = xOf(tv + 0.5 * h.width);
       s += `<text x="${x}" y="${H - 22}" text-anchor="middle">${tv}</text>`;
     }
-    s += `<text x="${L + iw / 2}" y="${H - 4}" text-anchor="middle">obchodní dny do 1. výplaty</text>`;
-    for (const [v, name, dy] of [[total.median, 'medián', 10], [total.p80, '80. perc.', 24]]) {
+    s += `<text x="${L + iw / 2}" y="${H - 4}" text-anchor="middle">${tx('obchodní dny do 1. výplaty', 'trading days to the 1st payout')}</text>`;
+    for (const [v, name, dy] of [[total.median, tx('medián', 'median'), 10], [total.p80, tx('80. perc.', '80th pct.'), 24]]) {
       if (v == null) continue;
       const x = xOf(v + 0.5);
       s += `<line class="mark" x1="${x}" x2="${x}" y1="${T}" y2="${T + ih}"/><text x="${x + 4}" y="${T + dy}">${name} ${v}</text>`;
     }
-    if (h.overflow) s += `<text x="${W - R}" y="${T + 40}" text-anchor="end">+ ${fmtPct(h.overflow / sum)} nad ${x1 - 1} dní</text>`;
+    if (h.overflow) s += `<text x="${W - R}" y="${T + 40}" text-anchor="end">+ ${fmtPct(h.overflow / sum)} ${tx(`nad ${x1 - 1} dní`, `above ${x1 - 1} days`)}</text>`;
     return s + '</svg>';
   }
 
@@ -1020,7 +1064,9 @@
     const yOf = (y) => ((maxY - y) / (maxY - minY) * VH).toFixed(2);
     const order = trajs.slice().sort((a, b) => (b.passed - a.passed) || (a.days - b.days));
     const passed = trajs.filter((t) => t.passed).length;
-    let s = `<div class="traj-sum">Prošlo <b>${passed}</b> z ${trajs.length} běhů · všechny grafy mají stejnou osu Y (${fmtNum(Math.round(minY / 100) * 100)} $ až ${fmtNum(Math.round(maxY / 100) * 100)} $), osa X = dny daného běhu</div><div class="traj-grid">`;
+    const yr = [fmtNum(Math.round(minY / 100) * 100), fmtNum(Math.round(maxY / 100) * 100)];
+    let s = `<div class="traj-sum">` + tx(`Prošlo <b>${passed}</b> z ${trajs.length} běhů · všechny grafy mají stejnou osu Y (${yr[0]} $ až ${yr[1]} $), osa X = dny daného běhu`,
+      `<b>${passed}</b> of ${trajs.length} runs passed · all charts share the Y axis (${yr[0]} $ to ${yr[1]} $), X axis = days of that run`) + `</div><div class="traj-grid">`;
     for (const t of order) {
       const p = t.points;
       const maxX = Math.max(1, p[p.length - 3]);
@@ -1033,9 +1079,10 @@
       const zone = thr + `L${VW} ${VH}L0 ${VH}Z`;
       const c = t.passed ? 'ok' : 'ko';
       const dayWord = t.days === 1 ? 'den' : t.days < 5 ? 'dny' : 'dní';
-      const label = t.passed ? `prošel za ${t.days} ${dayWord}` : `spadl ${t.days}. den`;
+      const label = t.passed ? tx(`prošel za ${t.days} ${dayWord}`, `passed in ${t.days} ${t.days === 1 ? 'day' : 'days'}`)
+        : tx(`spadl ${t.days}. den`, `failed on day ${t.days}`);
       s += `<figure class="mini ${c}"><figcaption>${t.passed ? '✓' : '✗'} ${label}</figcaption>` +
-        `<svg viewBox="0 0 ${VW} ${VH}" preserveAspectRatio="none" role="img" aria-label="Běh evaluace: ${label}"><title>${label}</title>` +
+        `<svg viewBox="0 0 ${VW} ${VH}" preserveAspectRatio="none" role="img" aria-label="${tx('Běh evaluace', 'Evaluation run')}: ${label}"><title>${label}</title>` +
         `<path class="zone" d="${zone}"/>` +
         `<line class="zero" x1="0" x2="${VW}" y1="${yOf(0)}" y2="${yOf(0)}"/>` +
         `<line class="target" x1="0" x2="${VW}" y1="${yOf(cfg.profitTarget)}" y2="${yOf(cfg.profitTarget)}"/>` +
@@ -1059,11 +1106,12 @@
 
   // ---------- barevný režim: auto → světlý → tmavý ----------
   const THEME_KEY = 'prop-kalkulacka-theme';
-  const THEMES = { auto: '◐ Auto', light: '☀ Světlý', dark: '☾ Tmavý' };
+  const themes = () => ({ auto: '◐ Auto', light: tx('☀ Světlý', '☀ Light'), dark: tx('☾ Tmavý', '☾ Dark') });
   function applyTheme(t) {
     if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
     else delete document.documentElement.dataset.theme;
-    $('theme').textContent = THEMES[t] || THEMES.auto;
+    $('theme').textContent = themes()[t] || themes().auto;
+    $('theme').title = tx('Přepnout barevný režim', 'Switch colour theme');
   }
   let theme = 'auto';
   try { theme = localStorage.getItem(THEME_KEY) || 'auto'; } catch (e) {}
@@ -1074,8 +1122,34 @@
     applyTheme(theme);
   });
 
+  // ---------- jazyk ----------
+  function applyStatic() {
+    document.documentElement.lang = lang;
+    document.title = tx('Prop kalkulačka', 'Prop firm calculator');
+    document.querySelectorAll('[data-en]').forEach((el) => {
+      if (el.dataset.cs == null) el.dataset.cs = el.innerHTML;
+      el.innerHTML = lang === 'en' ? el.dataset.en : el.dataset.cs;
+    });
+    $('lang').textContent = tx('EN', 'CZ');
+    $('lang').title = tx('Switch to English', 'Přepnout do češtiny');
+  }
+  function setLang(l) {
+    lang = l;
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+    applyStatic();
+    applyTheme(theme);
+    buildForm();
+    fillForm();
+    renderWarnings();
+    if (lastResult) render(lastResult);
+  }
+  $('lang').addEventListener('click', () => setLang(lang === 'en' ? 'cs' : 'en'));
+
   // ---------- start ----------
+  applyStatic();
+  applyTheme(theme);
   buildForm();
+  bindStatic();
   fillForm();
   renderWarnings();
   initWorker();
