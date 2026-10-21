@@ -114,6 +114,11 @@
   .inp input[type=number] { width: 100%; padding-right: 26px; }
   .inp.u2 input[type=number] { padding-right: 34px; }
   .inp .unit { position: absolute; right: 9px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 12px; pointer-events: none; }
+  select, input[type=text] {
+    font: inherit; padding: 6px 8px; border-radius: 7px; width: 100%;
+    border: 1px solid var(--border); background: var(--panel-2); color: var(--text);
+  }
+  .inp.u3 input[type=number] { padding-right: 44px; }
   input[type=number] {
     font: inherit; font-variant-numeric: tabular-nums; padding: 6px 8px; border-radius: 7px; text-align: right;
     border: 1px solid var(--border); background: var(--panel-2); color: var(--text);
@@ -368,7 +373,7 @@
 (function () {
   'use strict';
   const STORAGE_KEY = 'prop-kalkulacka-v1';
-  const D = { ...Sim.DEFAULTS, targetDays: 25 };
+  const D = { ...Sim.DEFAULTS, targetDays: 25, currency: 'CZK', currencySym: '' };
 
   // Vstupy: Účet a pravidla (evaluace, drawdown, funded) · Obchodování (tabulka eval vs. funded) · Rozpočet
   const F = (k, label, unit, step, min, max, extra) => ({ k, label, unit, step, min, max, ...extra });
@@ -414,14 +419,27 @@
         F('tradesPerDay', 'Obchodů denně', '', 1, 1, 50),
       ]}],
     },
-    { title: 'Rozpočet', sections: [{ fields: [
-      F('budget', 'Rozpočet', 'Kč', 500, 0),
-      F('fxRate', 'Kurz Kč/USD', '', 0.1, 0.01),
+    { title: 'Rozpočet', currency: true, sections: [{ fields: [
+      F('budget', 'Rozpočet', '¤', 500, 0),
+      F('fxRate', 'Kurz za 1 USD', '', 0.01, 0.0001, null, { hint: '' }),
       F('fxFee', 'Poplatek za cizí měnu', '%', 0.5, 0),
       F('taxReserve', 'Rezerva na daně', '%', 1, 0, 100),
       F('maxAttempts', 'Max počet pokusů', '', 1, 1, null, { optional: true, hint: '', full: true }),
     ]}]},
   ];
+  // Měna rozpočtu: symbol + orientační kurz za 1 USD (předvyplní se jen při přepnutí, je potřeba ho zkontrolovat)
+  const CURRENCIES = {
+    CZK: { sym: 'Kč', rate: 21, name: 'Česká koruna' },
+    EUR: { sym: '€', rate: 0.86, name: 'Euro' },
+    USD: { sym: '$', rate: 1, name: 'Americký dolar' },
+    GBP: { sym: '£', rate: 0.75, name: 'Britská libra' },
+    PLN: { sym: 'zł', rate: 3.7, name: 'Polský zlotý' },
+    CHF: { sym: 'CHF', rate: 0.8, name: 'Švýcarský frank' },
+    HUF: { sym: 'Ft', rate: 340, name: 'Maďarský forint' },
+    OTHER: { sym: '', rate: null, name: 'Jiná…' },
+  };
+  const curSym = () => (state.currency === 'OTHER' ? (state.currencySym || '¤') : (CURRENCIES[state.currency] || CURRENCIES.CZK).sym);
+
   const ALL_FIELDS = GROUPS.flatMap((g) => [
     ...(g.matrix ? g.matrix.rows.flatMap((r) => r.cells) : []),
     ...g.sections.flatMap((sec) => sec.fields),
@@ -430,7 +448,9 @@
   const $ = (id) => document.getElementById(id);
   const fmtPct = (x, d = 1) => (x == null || !isFinite(x)) ? '–' : (x * 100).toLocaleString('cs-CZ', { minimumFractionDigits: d, maximumFractionDigits: d }) + ' %';
   const fmtNum = (x, d = 0) => (x == null || !isFinite(x)) ? '∞' : x.toLocaleString('cs-CZ', { minimumFractionDigits: d, maximumFractionDigits: d });
-  const fmtCzk = (x) => (x == null || !isFinite(x)) ? '∞' : Math.round(x).toLocaleString('cs-CZ') + ' Kč';
+  // částka v měně rozpočtu (název fmtCzk zůstal z doby, kdy byla jen Kč)
+  const fmtCzk = (x) => (x == null || !isFinite(x)) ? '∞'
+    : x.toLocaleString('cs-CZ', { maximumFractionDigits: Math.abs(x) < 100 ? 2 : 0 }) + ' ' + curSym();
   const fmtUsd = (x) => x.toLocaleString('cs-CZ', { maximumFractionDigits: 2 }) + ' $';
 
   // ---------- stav + localStorage ----------
@@ -464,6 +484,27 @@
             r.cells.map((f) => `<input type="number" id="in_${f.k}" aria-label="${f.label}" title="${f.label}"${attrs(f)}${f.span ? ` class="span${f.span}"` : ''}>`).join('')).join('');
         box.appendChild(m);
         for (const r of g.matrix.rows) for (const f of r.cells) bind(f, m.querySelector('#in_' + f.k));
+      }
+      if (g.currency) {
+        const c = document.createElement('div');
+        c.className = 'fields';
+        c.innerHTML = `<div class="field"><label for="currency">Měna rozpočtu</label><select id="currency">` +
+          Object.entries(CURRENCIES).map(([code, x]) => `<option value="${code}">${code === 'OTHER' ? x.name : `${code} (${x.sym}) – ${x.name}`}</option>`).join('') +
+          `</select></div><div class="field" id="currencySymWrap"><label for="currencySym">Symbol / kód měny</label><input type="text" id="currencySym" maxlength="6" placeholder="např. SEK"></div>`;
+        box.appendChild(c);
+        c.querySelector('#currency').addEventListener('change', (e) => {
+          state.currency = e.target.value;
+          const def = CURRENCIES[state.currency];
+          if (def && def.rate != null) { state.fxRate = def.rate; inputEls.fxRate.value = def.rate; inputEls.fxRate.classList.remove('invalid'); }
+          if (state.currency === 'USD') { state.fxFee = 0; inputEls.fxFee.value = 0; }
+          updateCurrencyUi(true);
+          changed();
+        });
+        c.querySelector('#currencySym').addEventListener('input', (e) => {
+          state.currencySym = e.target.value.trim();
+          updateCurrencyUi(false);
+          changed();
+        });
       }
       for (const sec of g.sections) {
         if (sec.sub) {
@@ -539,7 +580,24 @@
     $('runs').value = state.runs;
     $('runs').classList.remove('invalid');
     $('fixedSeed').checked = !!state.fixedSeed;
+    updateCurrencyUi(false);
     updateAttemptsHint();
+  }
+
+  function updateCurrencyUi(switched) {
+    const sym = curSym();
+    $('currency').value = state.currency;
+    $('currencySym').value = state.currencySym || '';
+    $('currencySymWrap').style.display = state.currency === 'OTHER' ? '' : 'none';
+    const unit = inputEls.budget.parentElement.querySelector('.unit');
+    unit.textContent = sym;
+    inputEls.budget.parentElement.classList.toggle('u2', sym.length > 1);
+    inputEls.budget.parentElement.classList.toggle('u3', sym.length > 2);
+    document.querySelector('label[for="in_fxRate"]').textContent = `Kurz ${sym}/USD`;
+    const h = $('hint_fxRate');
+    if (h) h.textContent = state.currency === 'USD' ? 'Rozpočet je v dolarech, kurz je 1.'
+      : switched && CURRENCIES[state.currency] && CURRENCIES[state.currency].rate != null ? 'Orientační kurz – zkontroluj aktuální.'
+      : `Kolik ${sym} stojí 1 USD.`;
   }
 
   function onInput(f, el) {
@@ -559,7 +617,7 @@
     el.placeholder = 'auto: ' + m.autoAttempts;
     $('hint_maxAttempts').textContent = m.manualAttempts
       ? `Ručně přepsáno (z rozpočtu by vyšlo ${m.autoAttempts}). Smaž pole pro automatický výpočet.`
-      : `Automaticky z rozpočtu: ${fmtNum(state.budget)} Kč / ${fmtNum(m.attemptCzk, 2)} Kč = ${m.autoAttempts}.`;
+      : `Automaticky z rozpočtu: ${fmtNum(state.budget)} ${curSym()} / ${fmtNum(m.attemptCzk, 2)} ${curSym()} = ${m.autoAttempts}.`;
   }
 
   // ---------- výpočet (Worker → Blob Worker → hlavní vlákno) ----------
@@ -720,7 +778,7 @@
       ['Průměrný počet výplat na 1 pokus <small>(vč. neprojitých evaluací)</small>', fmtNum(L.payoutsPerAttempt, 2)],
       ['Průměrně vybereš z funded účtu', fmtCzk(L.payoutsTotalCzk)],
       ['Očekávaná hodnota pokusu (všechny výplaty)', `<span class="${cls(L.evPerAttempt)}">${L.evPerAttempt >= 0 ? '+' : ''}${fmtCzk(L.evPerAttempt)}</span>`],
-      ['1 Kč za pokus vrátí průměrně', fmtNum(back, 1) + ' Kč'],
+      [`1 ${curSym()} za pokus vrátí průměrně`, fmtNum(back, 1) + ' ' + curSym()],
       ['Délka funded účtu (medián / 80 %)', L.lifeDays.n ? `${L.lifeDays.median} / ${L.lifeDays.p80} dní` : '–'],
     ];
     $('life').innerHTML = rows.map(([a, b]) => `<tr><td>${a}</td><td>${b}</td></tr>`).join('');
@@ -769,7 +827,7 @@
     s += `<rect class="neg-zone" x="${L}" y="${yOf(0)}" width="${iw}" height="${T + ih - yOf(0)}"/>`;
     for (const tv of niceTicks(lo, hi, 5)) {
       const y = yOf(tv);
-      s += `<line class="gridl" x1="${L}" x2="${W - R}" y1="${y}" y2="${y}"/><text x="${L - 6}" y="${y + 4}" text-anchor="end">${tv === 0 ? '0' : fmtNum(tv / 1000, tv % 1000 ? 1 : 0) + 'k'} Kč</text>`;
+      s += `<line class="gridl" x1="${L}" x2="${W - R}" y1="${y}" y2="${y}"/><text x="${L - 6}" y="${y + 4}" text-anchor="end">${tv === 0 ? '0' : fmtNum(tv / 1000, tv % 1000 ? 1 : 0) + 'k'} ${curSym()}</text>`;
     }
     s += `<line class="zero" x1="${L}" x2="${W - R}" y1="${yOf(0)}" y2="${yOf(0)}"/>`;
     for (const tv of [10, 20, 30, 40, 50, 60, 70, 80, 90]) s += `<text x="${xOf(tv)}" y="${H - 22}" text-anchor="middle">${tv} %</text>`;
@@ -791,7 +849,7 @@
   }
 
   const METRICS = {
-    rate: { better: 1, fmt: (v) => fmtNum(v, 0), name: 'zisk za obchodní den (Kč)' },
+    rate: { better: 1, fmt: (v) => fmtNum(v, 0), get name() { return `zisk za obchodní den (${curSym()})`; } },
     pTotal: { better: 1, fmt: (v) => fmtPct(v, 0), name: 'šance na 1. výplatu' },
     ev: { better: 1, fmt: (v) => (v >= 0 ? '+' : '') + fmtNum(v / 1000, 1) + 'k', name: 'očekávaný zisk na pokus' },
     days: { better: -1, fmt: (v) => v == null ? '–' : fmtNum(v, 0), name: 'medián dní do 1. výplaty' },
@@ -884,7 +942,7 @@
     $('recs').innerHTML =
       rec(`Nejlepší do ${target} dní`, fits.length ? `nejvyšší šance na výplatu s mediánem do ${target} obchodních dní`
         : `do ${target} dní to nejde – tohle je nejrychlejší možnost`, inTime, 'opt', true) +
-      rec('Max zisk za den', 'nejvíc Kč za obchodní den dlouhodobě, ale s nižší šancí na první účet', optimum, 'rate', true) +
+      rec('Max zisk za den', `nejvíc ${curSym()} za obchodní den dlouhodobě, ale s nižší šancí na první účet`, optimum, 'rate', true) +
       rec('Tvoje nastavení', cur.days != null && cur.days <= target
         ? `vejde se do ${target} dní, šance ${cur.pTotal >= inTime.pTotal - 0.01 ? 'je na maximu' : `o ${fmtNum((inTime.pTotal - cur.pTotal) * 100, 0)} p. b. nižší než doporučení`}`
         : `medián ${cur.days ?? '–'} dní je nad tvým cílem`, cur, 'cur', false);

@@ -135,7 +135,7 @@ Výpočet běží ve Web Workeru. Při otevření přes `file://` se automaticky
 - EOD trailing drawdown se zamčením, daily loss limit, consistency pravidlo
 - Evaluace a funded fáze s vlastní úspěšností a rizikem (před / po zamčení drawdownu)
 - Více výplat z funded účtu (limit výplat, min. dní mezi výplatami, horizont)
-- Peníze v Kč: cena pokusu, výplata po splitu a daních, očekávaný zisk
+- Peníze v libovolné měně (Kč, €, $, £, zł… nebo vlastní): cena pokusu, výplata po splitu a daních, očekávaný zisk
 - Čas: medián a 80. percentil dní, histogram, ukázkové trajektorie
 - Citlivost na úspěšnost a hranice úspěšnosti (od kdy se to vyplatí)
 - Optimalizátor rizika: heatmapa riziko evaluace × funded, slider cílového času
