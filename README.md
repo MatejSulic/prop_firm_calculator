@@ -2,6 +2,33 @@
 
 Lokální webová kalkulačka pro plánování prop trading účtů: Monte Carlo simulace pravděpodobnosti projití evaluace, výplat z funded účtu a finančního výsledku v rámci rozpočtu. Není to trade journal.
 
+![Přehled kalkulačky](docs/prehled.png)
+
+## Jak to vypadá
+
+**Optimální riziko a čas:** slider „chci výplatu do X dní“, doporučené nastavení a heatmapa riziko evaluace × funded.
+
+![Optimální riziko a čas](docs/optimalizace.png)
+
+**Hranice úspěšnosti:** od jaké úspěšnosti obchodů se to vyplatí.
+
+![Hranice úspěšnosti](docs/hranice.png)
+
+**Funded účet:** kolik výplat průměrně dá a s jakou pravděpodobností.
+
+![Funded účet – všechny výplaty](docs/funded.png)
+
+**Ukázkové trajektorie:** 20 náhodných běhů evaluace s hranicí drawdownu.
+
+![Ukázkové trajektorie](docs/trajektorie.png)
+
+**Tmavý režim a mobil:** podle nastavení systému.
+
+<p>
+  <img src="docs/tmavy.png" alt="Tmavý režim" width="68%">
+  <img src="docs/mobil.png" alt="Mobil" width="28%">
+</p>
+
 ## Jak to stáhnout a spustit (krok za krokem)
 
 Nic se neinstaluje. Potřebuješ jen webový prohlížeč (Chrome, Firefox, Edge, Safari…). Pro možnost A ještě [git](https://git-scm.com/downloads); když ho nemáš, použij možnost B.
