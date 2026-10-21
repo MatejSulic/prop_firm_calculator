@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Prop kalkulačka</title>
+<script>
+  try { const t = localStorage.getItem('prop-kalkulacka-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <style>
   :root {
     color-scheme: light dark;
@@ -24,7 +27,7 @@
     --radius: 10px;
   }
   @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme="light"]) {
       --bg: #0f1216;
       --panel: #171b21;
       --panel-2: #1e232a;
@@ -41,6 +44,24 @@
       --grid: #232930;
     }
   }
+  :root[data-theme="dark"] {
+    --bg: #0f1216;
+    --panel: #171b21;
+    --panel-2: #1e232a;
+    --border: #2b323b;
+    --text: #e6e9ed;
+    --muted: #94a0ad;
+    --accent: #6b9cff;
+    --accent-soft: rgba(107, 156, 255, .16);
+    --good: #3fbf86;
+    --bad: #f06b74;
+    --warn-bg: #2d2511;
+    --warn-border: #6b5520;
+    --warn-text: #f1d58a;
+    --grid: #232930;
+  }
+  :root[data-theme="light"] { color-scheme: light; }
+  :root[data-theme="dark"] { color-scheme: dark; }
   * { box-sizing: border-box; }
   html, body { margin: 0; }
   body {
@@ -235,6 +256,7 @@
   <div class="controls">
     <label>Běhů <input type="number" id="runs" min="1000" max="1000000" step="1000"></label>
     <label><input type="checkbox" id="fixedSeed"> Stejná náhoda</label>
+    <button id="theme" type="button" title="Přepnout barevný režim"></button>
     <button id="reset" type="button">Obnovit výchozí hodnoty</button>
   </div>
 </header>
@@ -926,6 +948,23 @@
       $('traj').innerHTML = trajectorySvg(lastResult.trajectories, lastResult.cfg);
       renderBreakEven(lastResult);
     }, 150);
+  });
+
+  // ---------- barevný režim: auto → světlý → tmavý ----------
+  const THEME_KEY = 'prop-kalkulacka-theme';
+  const THEMES = { auto: '◐ Auto', light: '☀ Světlý', dark: '☾ Tmavý' };
+  function applyTheme(t) {
+    if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+    else delete document.documentElement.dataset.theme;
+    $('theme').textContent = THEMES[t] || THEMES.auto;
+  }
+  let theme = 'auto';
+  try { theme = localStorage.getItem(THEME_KEY) || 'auto'; } catch (e) {}
+  applyTheme(theme);
+  $('theme').addEventListener('click', () => {
+    theme = { auto: 'light', light: 'dark', dark: 'auto' }[theme] || 'auto';
+    try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+    applyTheme(theme);
   });
 
   // ---------- start ----------
